@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meu Aluguel — Seus aluguéis organizados</title>
+<meta name="description" content="Organize imóveis, inquilinos e recebimentos em um só lugar. Saiba quem pagou, acompanhe atrasos e envie lembretes pelo WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,500;6..12,600;6..12,700;6..12,800&display=swap">
+<style>
+:root{--verde:#315442;--verde2:#426C59;--claro:#7CB342;--suave:#E5EEE6;--ouro:#F4B942;--fundo:#F5F3EA;--card:#FFFFFF;--texto:#303A34;--t2:#5F675F;--borda:#DAD7C8;--roof:#315442;--corpo:#FAF9F3;--btn:#315442;--btnt:#fff;--sombra:0 2px 12px rgba(49,84,66,.09);--ok-bg:#E5EEE6;--ok:#27623F;--w-bg:#FCEFD0;--w:#7A5410;--e-bg:#F8E3E0;--e:#9C3A31;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fundo:#17211B;--card:#1F2C25;--suave:#2A3B31;--texto:#F1EFE6;--t2:#B8C0B7;--borda:#364A3E;--roof:#E5EEE6;--corpo:#1F2C25;--btn:#7CB342;--btnt:#14210A;--sombra:none;--ok-bg:#2A3B31;--ok:#A9D8B5;--w-bg:#443716;--w:#F4D58A;--e-bg:#4A2824;--e:#F2B1AA}}
+html{scroll-behavior:smooth;scroll-padding-top:calc(88px + env(safe-area-inset-top,0px))}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fundo);color:var(--texto);font:500 18px/1.65 "Nunito Sans",system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--fundo);z-index:30}
+h1,h2,h3{font-weight:800;line-height:1.12;margin:0 0 14px}
+h1{font-size:clamp(2.2rem,7vw,3.6rem);letter-spacing:-.02em}h2{font-size:clamp(1.7rem,4.5vw,2.5rem);letter-spacing:-.01em}h3{font-size:1.25rem;font-weight:700}
+p{margin:0 0 14px}a{color:inherit}
+.w{max-width:1100px;margin:0 auto;padding:0 20px}.sec{padding:72px 0}.lead{color:var(--t2);font-size:1.15rem;max-width:56ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 28px;border-radius:14px;border:2px solid transparent;font:700 1.05rem "Nunito Sans",sans-serif;text-decoration:none;cursor:pointer;background:var(--btn);color:var(--btnt)}
+.btn.o{background:transparent;color:var(--texto);border-color:var(--verde2)}.btn.g{background:var(--ouro);color:#2B2308}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--ouro);outline-offset:3px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--fundo);border-bottom:1px solid var(--borda)}
+.bar{display:flex;align-items:center;justify-content:space-between;min-height:72px;gap:12px}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:1.35rem;color:var(--verde);letter-spacing:-.02em}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo{color:var(--texto)}}
+nav.d{display:none;gap:26px;font-weight:700}nav.d a{text-decoration:none}nav.d a:hover{text-decoration:underline}
+.act{display:none;gap:10px}.act .btn{min-height:48px;padding:0 20px}
+details.m{position:relative}details.m summary{list-style:none;min-height:48px;min-width:48px;display:grid;place-items:center;border:2px solid var(--verde2);border-radius:12px;font-weight:800;cursor:pointer;padding:0 14px}
+details.m summary::-webkit-details-marker{display:none}
+.mp{position:absolute;right:0;top:56px;width:min(300px,calc(100vw - 40px));background:var(--card);border:1px solid var(--borda);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:10px;display:grid;gap:2px}
+.mp a{padding:14px;border-radius:10px;text-decoration:none;font-weight:700}.mp .btn{margin-top:6px}
+@media (min-width:900px){nav.d,.act{display:flex}details.m{display:none}}
+.hero{padding:48px 0 72px;display:grid;gap:40px;align-items:center}
+@media (min-width:900px){.hero{grid-template-columns:1.15fr .85fr;padding:72px 0 88px}}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.phone{justify-self:center;width:min(310px,100%);background:#1F2C25;border-radius:38px;padding:10px;box-shadow:0 20px 50px rgba(49,84,66,.28)}
+.scr{background:var(--fundo);border-radius:29px;padding:18px 16px 14px;color:var(--texto)}
+.scr .tag{display:inline-block;font-size:.75rem;font-weight:700;color:var(--t2);border:1px solid var(--borda);border-radius:99px;padding:1px 10px;margin-bottom:10px}
+.kp{background:var(--card);border:1px solid var(--borda);border-radius:16px;padding:14px;margin-bottom:10px}
+.kp small{display:block;color:var(--t2);font-weight:600;font-size:.85rem;line-height:1.3}.kp b{display:block;font-weight:800;font-size:1.65rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.bar2{height:10px;border-radius:9px;background:var(--suave);margin:8px 0 2px;overflow:hidden}.bar2 i{display:block;height:100%;width:74%;background:var(--claro)}
+.li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--borda);font-size:.9rem;line-height:1.3}.li:first-of-type{border-top:0}
+.bd{font-weight:700;font-size:.78rem;padding:3px 9px;border-radius:99px;white-space:nowrap}.ok{background:var(--ok-bg);color:var(--ok)}.wn{background:var(--w-bg);color:var(--w)}.er{background:var(--e-bg);color:var(--e)}
+.nv{display:flex;justify-content:space-around;font-size:.7rem;font-weight:700;margin-top:8px;color:var(--t2)}.nv .on{color:var(--verde2)}
+.two{display:grid;gap:28px}@media (min-width:860px){.two{grid-template-columns:1fr 1fr;align-items:start}}
+.card{background:var(--card);border:1px solid var(--borda);border-radius:18px;box-shadow:var(--sombra);padding:26px}
+.pl{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:12px}.pl li{display:flex;gap:12px;align-items:flex-start}.pl li::before{content:"–";font-weight:800;color:var(--t2)}
+.sol li::before{content:"✓";color:var(--ok)}
+.steps{display:grid;gap:16px;margin-top:28px}@media (min-width:860px){.steps{grid-template-columns:repeat(3,1fr)}}
+.st{display:flex;gap:16px}.n{flex:none;width:52px;height:52px;border-radius:50%;background:var(--verde);color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.4rem}
+.fs{display:grid;gap:4px 28px;margin-top:28px}@media (min-width:760px){.fs{grid-template-columns:1fr 1fr}}
+.f{display:flex;gap:16px;padding:18px 0;border-top:1px solid var(--borda)}
+.ic{flex:none;width:56px;height:56px;border-radius:16px;background:var(--suave);color:var(--verde);display:grid;place-items:center}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ic{color:var(--claro)}}
+.ic svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.f p{margin:0;color:var(--t2)}.f h3{margin-bottom:4px}
+.band{background:var(--verde);color:#fff}.band h2{color:#fff}.band .lead{color:#DCE8DF}
+.bn{display:grid;gap:14px;margin-top:28px;list-style:none;padding:0}@media (min-width:760px){.bn{grid-template-columns:repeat(2,1fr)}}
+.bn li{border-left:4px solid var(--ouro);padding:4px 0 4px 18px;font-weight:700;font-size:1.2rem}.bn span{display:block;font-weight:500;font-size:1rem;color:#DCE8DF}
+.pg{display:grid;gap:18px;margin-top:28px}@media (min-width:860px){.pg{grid-template-columns:repeat(3,1fr);align-items:stretch}}
+.pc{display:flex;flex-direction:column}.pc.hl{border:2px solid var(--verde2)}
+.pr{font-weight:800;font-size:2.6rem;line-height:1.1;margin:8px 0 2px;font-variant-numeric:tabular-nums}.pr small{font-size:1rem;font-weight:600;color:var(--t2)}
+.pc .btn{margin-top:auto}.pc ul{margin:14px 0 22px;padding-left:20px;color:var(--t2)}
+.rb{display:inline-block;align-self:flex-start;background:var(--ouro);color:#2B2308;font-weight:800;font-size:.85rem;padding:2px 12px;border-radius:99px}
+.note{color:var(--t2);font-size:.95rem;margin-top:16px}
+details.q{border-bottom:1px solid var(--borda)}details.q summary{cursor:pointer;font-weight:700;font-size:1.15rem;padding:20px 40px 20px 0;list-style:none;position:relative;min-height:56px}
+details.q summary::-webkit-details-marker{display:none}details.q summary::after{content:"+";position:absolute;right:6px;top:16px;font-size:1.6rem;font-weight:800;color:var(--verde2)}
+details.q[open] summary::after{content:"–"}details.q p{color:var(--t2);padding-bottom:18px;max-width:62ch;margin:0}
+footer{background:#1F2C25;color:#E5EEE6;padding:56px 0 32px}footer .logo{color:#fff;--roof:#fff;--corpo:#1F2C25}
+.fg{display:grid;gap:32px}@media (min-width:760px){.fg{grid-template-columns:1.4fr 1fr 1fr}}
+footer h3{font-size:1rem;color:#fff}footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}footer a{text-decoration:none}footer a:hover{text-decoration:underline}
+.cp{border-top:1px solid #364A3E;margin-top:32px;padding-top:20px;font-size:.9rem;color:#B8C0B7}
+@media (prefers-reduced-motion:no-preference){.phone{animation:up .7s ease-out both}@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}}
+
+.phone{width:min(292px,100%);padding:9px;border-radius:50px;background:linear-gradient(145deg,#5a625c,#1b211d 38%,#3b433e);box-shadow:inset 0 0 0 1.5px #727b74,0 30px 60px rgba(49,84,66,.32);position:relative}
+.phone::before{content:"";position:absolute;left:-3px;top:92px;width:3px;height:24px;border-radius:2px 0 0 2px;background:#3b433e;box-shadow:0 44px 0 #3b433e,0 88px 0 #3b433e}
+.phone::after{content:"";position:absolute;right:-3px;top:150px;width:3px;height:66px;border-radius:0 2px 2px 0;background:#3b433e}
+.scr{padding:0;border-radius:41px;overflow:hidden;position:relative}
+.isl{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:86px;height:25px;border-radius:14px;background:#050806}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:12px 26px 0;height:44px;font-weight:800;font-size:.82rem}
+.sb span:last-child{display:flex;gap:5px;align-items:center}
+.pb{padding:4px 14px 0}
+.hd{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px}.hd b{font-size:1.05rem;font-weight:800;line-height:1.2;display:block}.hd small{color:var(--t2);font-weight:600;font-size:.78rem}
+.av{width:36px;height:36px;border-radius:50%;background:var(--verde2);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.9rem}
+.tb{display:flex;justify-content:space-around;border-top:1px solid var(--borda);background:var(--card);padding:8px 6px 4px;margin-top:4px}
+.tb span{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.62rem;font-weight:700;color:var(--t2);min-width:48px;padding:4px 0;border-radius:10px}
+.tb .on{color:var(--ok);background:var(--suave)}
+.tb svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hi{height:5px;width:100px;border-radius:3px;background:var(--texto);opacity:.8;margin:6px auto 8px}
+.pb .kp{padding:12px 14px}.pb .kp b{font-size:1.55rem}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs><linearGradient id="gv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8BC34A"/><stop offset="1" stop-color="#5E9A2E"/></linearGradient><linearGradient id="gj" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC52F"/><stop offset="1" stop-color="#F4A912"/></linearGradient></defs>
+<symbol id="casa" viewBox="0 0 100 80"><rect x="76" y="8.5" width="11.5" height="19" rx="2" fill="currentColor"/><rect x="15" y="36" width="9.5" height="25" rx="1.2" fill="currentColor"/><rect x="77.5" y="34" width="8" height="22" rx="1.2" fill="currentColor"/><path d="M19.4 36 50.4 14 78.3 33.3V58H24Z" style="fill:var(--corpo,#FAF9F3)"/><path d="M8.5 36 50.4 5.2 91.5 36" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><g fill="url(#gj)"><rect x="39.2" y="27.9" width="10.2" height="9.6" rx="3"/><rect x="51.6" y="27.9" width="10.2" height="9.6" rx="3"/><rect x="39.2" y="39.3" width="10.2" height="9.6" rx="3"/><rect x="51.6" y="39.3" width="10.2" height="9.6" rx="3"/></g><path d="M0 67.4C22 61 40 51 56 50.4 70 50 84 53 90.4 57.8 70 52 44 62 21 74 12 74.6 5 71.6 0 67.4Z" fill="url(#gv)"/><path d="M33.3 75.5C50 64 78 60.5 100 65.6 82 66.6 56 70.5 33.3 75.5Z" fill="url(#gj)"/></symbol>
+</svg>
+
+<header><div class="w bar">
+<a class="logo" href="#topo" aria-label="Meu Aluguel, início"><svg width="46" height="37" style="color:var(--roof)" aria-hidden="true"><use href="#casa"/></svg>Meu Aluguel</a>
+<nav class="d" aria-label="Principal"><a href="#como">Como funciona</a><a href="#funcionalidades">Funcionalidades</a><a href="#planos">Planos</a><a href="#faq">Perguntas frequentes</a></nav>
+<div class="act"><a class="btn o" href="#">Entrar</a><a class="btn" href="#planos">Começar agora</a></div>
+<details class="m"><summary>Menu</summary><div class="mp"><a href="#como">Como funciona</a><a href="#funcionalidades">Funcionalidades</a><a href="#planos">Planos</a><a href="#faq">Perguntas frequentes</a><a class="btn o" href="#">Entrar</a><a class="btn" href="#planos">Começar agora</a></div></details>
+</div></header>
+
+<main id="topo">
+<section class="w hero">
+<div>
+<h1>Seus aluguéis organizados. Sua tranquilidade em dia.</h1>
+<p class="lead">Tenha todos os seus imóveis, inquilinos e recebimentos organizados em um só lugar. Saiba quem pagou, acompanhe os atrasos e envie lembretes sem complicação.</p>
+<div class="row"><a class="btn" href="#planos">Quero organizar meus aluguéis</a><a class="btn o" href="#como">Conhecer o sistema</a></div>
+</div>
+<div class="phone" role="img" aria-label="Tela inicial do aplicativo Meu Aluguel, com exemplo de valores recebidos e vencimentos">
+<div class="scr"><div class="isl"></div>
+<div class="sb"><span>9:41</span><span><svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx=".8"/><rect x="4.5" y="5" width="3" height="6" rx=".8"/><rect x="9" y="2.5" width="3" height="8.5" rx=".8"/><rect x="13.5" y="0" width="3" height="11" rx=".8"/></svg><svg width="25" height="12" viewBox="0 0 25 12"><rect x=".6" y=".6" width="21" height="10.8" rx="3.2" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="15" height="8" rx="2" fill="currentColor"/><rect x="23" y="4" width="1.6" height="4" rx=".8" fill="currentColor" opacity=".5"/></svg></span></div>
+<div class="pb">
+<div class="hd"><div><small>Exemplo ilustrativo</small><b>Bom dia, Marta</b></div><span class="av" aria-hidden="true">M</span></div>
+<div class="kp"><small>Aluguéis recebidos neste mês</small><b>R$ 3.600,00</b><div class="bar2"><i></i></div><small>Ainda falta receber R$ 1.250,00</small></div>
+<div class="kp" style="padding:4px 14px">
+<div class="li"><span><b>Casa Jardim</b><br>Vence dia 10</span><span class="bd ok">✓ Pago</span></div>
+<div class="li"><span><b>Apto 302</b><br>Pagou R$ 600 de R$ 1.000</span><span class="bd wn">◐ Parcial</span></div>
+<div class="li"><span><b>Sala 12</b><br>Venceu dia 5</span><span class="bd er">! Atrasado</span></div>
+</div></div>
+<div class="tb"><span class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Início</span><span class=""><svg viewBox="0 0 24 24"><path d="M4 20V5h10v15M14 10h6v10M8 9h2M8 13h2"/></svg>Imóveis</span><span class=""><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM9 13h6M9 17h6"/></svg>Aluguéis</span><span class=""><svg viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6"/></svg>Financeiro</span><span class=""><svg viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></svg>Mais</span></div>
+<div class="hi"></div>
+</div></div>
+</section>
+
+<section class="sec" style="background:var(--card)"><div class="w two">
+<div><h2>Administrar imóveis não deveria dar tanto trabalho.</h2><p class="lead">Quando tudo fica em cadernos, mensagens e papéis soltos, a rotina cansa. Você provavelmente já passou por isso:</p>
+<ul class="pl"><li>Não lembrar quem pagou.</li><li>Precisar procurar comprovantes.</li><li>Fazer cobranças manualmente, uma a uma.</li><li>Perder informações de contratos.</li><li>Não saber quanto recebeu no mês.</li></ul></div>
+<div class="card"><h3>Com o Meu Aluguel</h3><ul class="pl sol"><li>Você vê na hora quem já pagou e quem está atrasado.</li><li>Comprovantes ficam guardados junto de cada aluguel.</li><li>A mensagem de cobrança já vem pronta para o WhatsApp.</li><li>Contratos e vencimentos ficam no mesmo lugar.</li><li>O total do mês aparece logo na primeira tela.</li></ul></div>
+</div></section>
+
+<section class="sec" id="como"><div class="w">
+<h2>Como funciona</h2><p class="lead">Três passos, no seu ritmo. Você pode parar e continuar depois.</p>
+<div class="steps">
+<div class="st"><span class="n">1</span><div><h3>Cadastre seus imóveis e inquilinos</h3><p style="color:var(--t2)">Informe o básico: nome do imóvel, valor e quem mora nele.</p></div></div>
+<div class="st"><span class="n">2</span><div><h3>Organize aluguéis e vencimentos</h3><p style="color:var(--t2)">Crie o contrato e o dia do vencimento. Os aluguéis de cada mês aparecem sozinhos.</p></div></div>
+<div class="st"><span class="n">3</span><div><h3>Acompanhe pagamentos e recebimentos</h3><p style="color:var(--t2)">Registre o que foi pago e veja quanto falta receber.</p></div></div>
+</div></div></section>
+
+<section class="sec" id="funcionalidades" style="background:var(--card)"><div class="w">
+<h2>Tudo o que você precisa para cuidar dos aluguéis</h2>
+<div class="fs">
+<div class="f"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v14H4zM4 10h16M8 3v4M16 3v4"/></svg></span><div><h3>Controle de aluguéis</h3><p>Veja pagos, pendentes e atrasados, com pagamentos parciais.</p></div></div>
+<div class="f"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10M10 20v-6h4v6"/></svg></span><div><h3>Gestão de imóveis</h3><p>Cada imóvel tem sua página, com fotos, valores e histórico.</p></div></div>
+<div class="f"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><div><h3>Cadastro de inquilinos</h3><p>Contatos e documentos de cada inquilino organizados.</p></div></div>
+<div class="f"><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h6"/></svg></span><div><h3>Gestão de contratos</h3><p>Avisos de término e de reajuste, com o PDF guardado.</p></div></div>
+<div class="f"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></span><div><h3>Cobranças pelo WhatsApp</h3><p>Mensagem pronta com nome, valor e vencimento. Você confere e envia.</p></div></div>
+<div class="f"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><h3>Histórico de pagamentos</h3><p>Todos os pagamentos e comprovantes de cada inquilino.</p></div></div>
+<div class="f"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 7h18v13H3zM3 7l3-3h12v3M16 13h2"/></svg></span><div><h3>Controle de despesas</h3><p>Registre manutenção, impostos e contas de cada imóvel.</p></div></div>
+<div class="f"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6"/></svg></span><div><h3>Relatórios financeiros</h3><p>Resumos claros por mês, por ano e por imóvel, em PDF ou planilha.</p></div></div>
+</div></div></section>
+
+<section class="sec band"><div class="w">
+<h2>Mais organização para quem construiu seu patrimônio.</h2>
+<ul class="bn"><li>Menos preocupação<span>Você sabe o que já entrou e o que falta entrar.</span></li><li>Mais controle<span>Imóveis, contratos e valores em uma única tela.</span></li><li>Informações sempre organizadas<span>Nada de procurar papel ou mensagem antiga.</span></li><li>Cobranças mais simples<span>Mensagem pronta, a um toque do WhatsApp.</span></li><li>Fácil de acompanhar<span>Feito para usar no celular, com letras grandes.</span></li></ul>
+</div></section>
+
+<section class="sec" id="planos"><div class="w">
+<h2>Escolha o plano para a quantidade de imóveis que você tem</h2>
+<p class="lead">Todos os planos têm todas as funcionalidades. Muda apenas o número de imóveis.</p>
+<div class="pg">
+<div class="card pc"><h3>Inicial</h3><div class="pr">R$ 19,90<small>/mês</small></div><ul><li>Até 3 imóveis</li><li>Todas as funcionalidades</li></ul><a class="btn o" href="#">Começar com o Inicial</a></div>
+<div class="card pc hl"><span class="rb">Mais escolhido</span><h3 style="margin-top:10px">Profissional</h3><div class="pr">R$ 39,90<small>/mês</small></div><ul><li>Até 15 imóveis</li><li>Todas as funcionalidades</li></ul><a class="btn" href="#">Começar com o Profissional</a></div>
+<div class="card pc"><h3>Avançado</h3><div class="pr">R$ 69,90<small>/mês</small></div><ul><li>Até 40 imóveis</li><li>Todas as funcionalidades</li></ul><a class="btn o" href="#">Começar com o Avançado</a></div>
+</div>
+<p class="note">Valores iniciais de referência, sujeitos a alteração.</p>
+</div></section>
+
+<section class="sec" id="faq" style="background:var(--card)"><div class="w" style="max-width:820px">
+<h2>Perguntas frequentes</h2>
+<details class="q"><summary>Preciso entender de tecnologia?</summary><p>Não. O Meu Aluguel usa palavras simples, letras grandes e botões fáceis de tocar. Se você usa WhatsApp no celular, vai se sentir em casa.</p></details>
+<details class="q"><summary>Posso cadastrar vários imóveis?</summary><p>Sim. O limite depende do plano: 3, 15 ou 40 imóveis.</p></details>
+<details class="q"><summary>Como acompanho quem já pagou?</summary><p>Na tela de aluguéis, cada um aparece como pago, pendente, atrasado ou parcialmente pago. Você registra os pagamentos recebidos e o total do mês se atualiza.</p></details>
+<details class="q"><summary>Posso enviar cobranças pelo WhatsApp?</summary><p>Sim. O sistema prepara a mensagem e abre o WhatsApp para você conferir e enviar. O envio automático não faz parte da primeira versão.</p></details>
+<details class="q"><summary>Meus dados ficam protegidos?</summary><p>Cada proprietário só enxerga os próprios dados. Tratamos as informações conforme a LGPD e mantemos o acesso restrito.</p></details>
+<details class="q"><summary>Posso cancelar minha assinatura?</summary><p>Sim. Você poderá cancelar pela área de configurações, sem precisar falar com ninguém.</p></details>
+<details class="q"><summary>O sistema realiza pagamentos automaticamente?</summary><p>Não. O Meu Aluguel organiza e acompanha seus recebimentos. Ele não movimenta dinheiro por conta própria.</p></details>
+<details class="q"><summary>Posso acessar pelo celular?</summary><p>Sim. O sistema foi pensado primeiro para o celular e também funciona bem no computador.</p></details>
+</div></section>
+</main>
+
+<footer><div class="w">
+<div class="fg">
+<div><a class="logo" href="#topo"><svg width="52" height="42" style="color:var(--roof)" aria-hidden="true"><use href="#casa"/></svg>Meu Aluguel</a><p style="margin-top:14px;max-width:34ch">Seus imóveis sempre organizados. Você cuida dos seus imóveis, nós cuidamos da organização dos seus recebimentos.</p></div>
+<div><h3>Sobre</h3><ul><li><a href="#como">Como funciona</a></li><li><a href="#planos">Planos</a></li><li><a href="#faq">Perguntas frequentes</a></li><li><a href="#">Contato</a></li></ul></div>
+<div><h3>Informações</h3><ul><li><a href="#">Termos de uso</a></li><li><a href="#">Política de privacidade</a></li><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li></ul></div>
+</div>
+<p class="cp">© 2026 Meu Aluguel. Todos os direitos reservados. Razão social e CNPJ: a preencher.</p>
+</div></footer>
+</body>
+</html>

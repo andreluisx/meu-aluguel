@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meu Aluguel — Entrar e primeiros passos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,500;6..12,600;6..12,700;6..12,800&display=swap">
+<style>
+:root{--verde:#315442;--verde2:#426C59;--claro:#7CB342;--suave:#E5EEE6;--ouro:#F4B942;--fundo:#F5F3EA;--card:#FFFFFF;--texto:#303A34;--t2:#5F675F;--borda:#CFCBB9;--roof:#315442;--corpo:#FAF9F3;--btn:#315442;--btnt:#fff;--erro:#B2473E;--e-bg:#F8E3E0;--ok:#27623F;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fundo:#17211B;--card:#1F2C25;--suave:#2A3B31;--texto:#F1EFE6;--t2:#B8C0B7;--borda:#4A6054;--roof:#E5EEE6;--corpo:#1F2C25;--btn:#7CB342;--btnt:#14210A;--erro:#F2B1AA;--e-bg:#4A2824;--ok:#A9D8B5}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--fundo);color:var(--texto);font:500 18px/1.6 "Nunito Sans",system-ui,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--fundo);z-index:30}
+h1{font-weight:800;font-size:clamp(1.7rem,6vw,2.2rem);line-height:1.15;margin:0 0 8px;letter-spacing:-.01em}h1:focus{outline:none}
+p{margin:0 0 14px}.sub{color:var(--t2)}
+.demo{background:var(--ouro);color:#2B2308;font-weight:700;font-size:.9rem;text-align:center;padding:6px 12px}
+.shell{display:grid;min-height:calc(100vh - 34px)}
+@media (min-width:900px){.shell{grid-template-columns:5fr 6fr}}
+aside{display:none;background:var(--verde);color:#fff;padding:56px;flex-direction:column;justify-content:center;gap:28px;--roof:#fff;--corpo:#315442}
+@media (min-width:900px){aside{display:flex}}
+aside h2{font-weight:800;font-size:2.1rem;line-height:1.15;margin:0}aside li{margin-bottom:12px;padding-left:4px}aside ul{padding-left:20px;margin:0;color:#DCE8DF}
+main{display:flex;justify-content:center;padding:24px 20px 56px}
+.in{width:100%;max-width:460px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:1.35rem;letter-spacing:-.02em;color:var(--verde);margin-bottom:28px;text-decoration:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo{color:var(--texto)}}
+@media (min-width:900px){.logo.m{display:none}}
+.fl{margin-bottom:18px}label{display:block;font-weight:700;margin-bottom:6px}
+input,select{width:100%;min-height:56px;padding:0 16px;font:500 1.05rem "Nunito Sans",sans-serif;border:2px solid var(--borda);border-radius:12px;background:var(--card);color:var(--texto)}
+input[aria-invalid=true],select[aria-invalid=true]{border-color:var(--erro);background:var(--e-bg)}
+input:focus-visible,select:focus-visible,.btn:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--ouro);outline-offset:3px}
+.hint{font-size:.95rem;color:var(--t2);margin:4px 0 0}.er{display:none;font-weight:700;color:var(--erro);font-size:.95rem;margin-top:6px}.er.on{display:block}.er::before{content:"! "}
+.pw{position:relative}.pw button{position:absolute;right:6px;top:6px;min-height:44px;padding:0 14px;border:0;border-radius:10px;background:var(--suave);color:var(--texto);font:700 .95rem "Nunito Sans",sans-serif;cursor:pointer}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;padding:0 24px;border-radius:14px;border:2px solid transparent;font:700 1.1rem "Nunito Sans",sans-serif;background:var(--btn);color:var(--btnt);cursor:pointer;text-decoration:none;margin-top:8px}
+.btn.o{background:transparent;color:var(--texto);border-color:var(--verde2)}.btn.t{background:transparent;color:var(--texto);text-decoration:underline;min-height:52px}
+.lk{font-weight:700;color:var(--texto)}.ck{display:flex;gap:12px;align-items:flex-start;font-weight:500}.ck input{width:28px;min-height:28px;height:28px;flex:none;margin-top:2px;accent-color:var(--verde2)}
+.pg{height:10px;border-radius:9px;background:var(--suave);overflow:hidden;margin:6px 0 22px}.pg i{display:block;height:100%;background:var(--claro);transition:width .3s}
+.st{font-weight:700;color:var(--t2);font-size:.95rem}
+.row{display:grid;gap:14px}@media (min-width:420px){.row{grid-template-columns:1fr 1fr}}
+.pv{background:var(--suave);border-radius:14px;padding:16px 18px;font-weight:700;margin:6px 0 18px}
+.sum{background:var(--card);border:1px solid var(--borda);border-radius:18px;padding:6px 20px;margin:18px 0}.sum div{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--borda)}.sum div:first-child{border-top:0}.sum span{color:var(--t2)}.sum b{text-align:right}
+.chk{width:72px;height:72px;border-radius:50%;background:var(--claro);display:grid;place-items:center;margin-bottom:18px}.chk svg{width:38px;height:38px;stroke:#14210A;stroke-width:3.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ok-box{background:var(--suave);border-radius:14px;padding:14px 18px;font-weight:700;margin-bottom:18px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:no-preference){.s{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8BC34A"/><stop offset="1" stop-color="#5E9A2E"/></linearGradient><linearGradient id="gj" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC52F"/><stop offset="1" stop-color="#F4A912"/></linearGradient></defs>
+<symbol id="casa" viewBox="0 0 100 80"><rect x="76" y="8.5" width="11.5" height="19" rx="2" fill="currentColor"/><rect x="15" y="36" width="9.5" height="25" rx="1.2" fill="currentColor"/><rect x="77.5" y="34" width="8" height="22" rx="1.2" fill="currentColor"/><path d="M19.4 36 50.4 14 78.3 33.3V58H24Z" style="fill:var(--corpo,#FAF9F3)"/><path d="M8.5 36 50.4 5.2 91.5 36" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><g fill="url(#gj)"><rect x="39.2" y="27.9" width="10.2" height="9.6" rx="3"/><rect x="51.6" y="27.9" width="10.2" height="9.6" rx="3"/><rect x="39.2" y="39.3" width="10.2" height="9.6" rx="3"/><rect x="51.6" y="39.3" width="10.2" height="9.6" rx="3"/></g><path d="M0 67.4C22 61 40 51 56 50.4 70 50 84 53 90.4 57.8 70 52 44 62 21 74 12 74.6 5 71.6 0 67.4Z" fill="url(#gv)"/><path d="M33.3 75.5C50 64 78 60.5 100 65.6 82 66.6 56 70.5 33.3 75.5Z" fill="url(#gj)"/></symbol></svg>
+
+<div class="demo">Protótipo de demonstração: nada é salvo nem enviado.</div>
+<div class="shell">
+<aside>
+<span style="display:inline-flex;align-items:center;gap:14px;font-weight:800;font-size:2rem;letter-spacing:-.02em"><svg width="84" height="67" style="color:var(--roof)" aria-hidden="true"><use href="#casa"/></svg>Meu Aluguel</span>
+<h2>Seus aluguéis organizados. Sua tranquilidade em dia.</h2>
+<ul><li>Veja quem já pagou e quem está atrasado.</li><li>Cobranças prontas para o WhatsApp.</li><li>Imóveis, contratos e valores em um só lugar.</li></ul>
+</aside>
+<main><div class="in">
+<a class="logo m" href="#login" aria-label="Meu Aluguel"><svg width="52" height="42" style="color:var(--roof)" aria-hidden="true"><use href="#casa"/></svg>Meu Aluguel</a>
+
+<!-- LOGIN -->
+<section class="s" id="login"><h1 tabindex="-1">Que bom ver você de novo</h1><p class="sub">Entre para ver seus aluguéis.</p>
+<form data-next="inicio" novalidate>
+<div class="fl"><label for="l1">E-mail</label><input id="l1" name="email" type="email" autocomplete="email" data-t="email"><p class="er"></p></div>
+<div class="fl"><label for="l2">Senha</label><div class="pw"><input id="l2" name="senha" type="password" autocomplete="current-password" data-t="req"><button type="button" data-eye aria-pressed="false">Mostrar</button></div><p class="er"></p></div>
+<p><a class="lk" href="#recuperar">Esqueci minha senha</a></p>
+<button class="btn" type="submit">Entrar</button></form>
+<a class="btn o" href="#cadastro">Criar minha conta</a></section>
+
+<!-- CADASTRO -->
+<section class="s" id="cadastro" hidden><h1 tabindex="-1">Vamos começar?</h1><p class="sub">Crie sua conta em menos de um minuto.</p>
+<form data-next="passo-1" novalidate>
+<div class="fl"><label for="c1">Seu nome</label><input id="c1" name="nome" autocomplete="name" data-t="req" data-m="Escreva seu nome."><p class="er"></p></div>
+<div class="fl"><label for="c2">E-mail</label><input id="c2" name="email" type="email" autocomplete="email" data-t="email"><p class="er"></p></div>
+<div class="fl"><label for="c3">Crie uma senha</label><div class="pw"><input id="c3" name="senha" type="password" autocomplete="new-password" data-t="senha"><button type="button" data-eye aria-pressed="false">Mostrar</button></div><p class="hint">Pelo menos 8 caracteres.</p><p class="er"></p></div>
+<div class="fl"><label class="ck"><input type="checkbox" data-t="aceite" data-m="Para continuar, aceite os termos."><span>Li e aceito os <a class="lk" href="#cadastro">Termos de uso</a> e a <a class="lk" href="#cadastro">Política de privacidade</a>.</span></label><p class="er"></p></div>
+<button class="btn" type="submit">Criar minha conta</button></form>
+<p style="margin-top:18px">Já tem conta? <a class="lk" href="#login">Entrar</a></p></section>
+
+<!-- RECUPERAR -->
+<section class="s" id="recuperar" hidden><h1 tabindex="-1">Vamos recuperar sua senha</h1><p class="sub">Digite seu e-mail e enviaremos um link para criar uma nova senha.</p>
+<form data-next="recuperado" novalidate>
+<div class="fl"><label for="r1">E-mail</label><input id="r1" name="email" type="email" autocomplete="email" data-t="email"><p class="er"></p></div>
+<button class="btn" type="submit">Enviar link</button></form>
+<a class="btn t" href="#login">Voltar</a></section>
+<section class="s" id="recuperado" hidden><h1 tabindex="-1">Confira seu e-mail</h1><p class="ok-box">Se esse e-mail tiver cadastro, você receberá um link em instantes. (Na demonstração, nenhum e-mail é enviado.)</p><a class="btn" href="#login">Voltar para o início</a></section>
+
+<!-- ONBOARDING -->
+<section class="s ob" id="passo-1" data-n="1" hidden><p class="st"></p><div class="pg"><i></i></div><h1 tabindex="-1">Como podemos chamar você?</h1><p class="sub">Assim deixamos tudo mais pessoal.</p>
+<form data-next="passo-2" novalidate><div class="fl"><label for="o1">Seu nome</label><input id="o1" name="nome" data-t="req" data-m="Escreva seu nome."><p class="er"></p></div><button class="btn" type="submit">Continuar</button></form><a class="btn t" href="#pronto-depois">Salvar e continuar depois</a></section>
+
+<section class="s ob" id="passo-2" data-n="2" hidden><p class="st"></p><div class="pg"><i></i></div><h1 tabindex="-1">Vamos organizar seu primeiro imóvel</h1><p class="sub">Só o básico. O resto você completa depois.</p>
+<form data-next="passo-3" novalidate>
+<div class="fl"><label for="i1">Nome do imóvel</label><input id="i1" name="imovel" data-t="req" data-m="Dê um nome ao imóvel."><p class="hint">Ex.: Casa da Rua das Flores</p><p class="er"></p></div>
+<div class="fl"><label for="i2">Tipo</label><select id="i2" name="tipo"><option>Casa</option><option>Apartamento</option><option>Sala comercial</option><option>Terreno</option><option>Outro</option></select></div>
+<div class="fl"><label for="i3">Valor do aluguel (R$)</label><input id="i3" name="valor" inputmode="decimal" placeholder="900,00" data-t="valor" data-m="Informe o valor do aluguel."><p class="er"></p></div>
+<button class="btn" type="submit">Continuar</button></form><a class="btn t" href="#pronto-depois">Salvar e continuar depois</a></section>
+
+<section class="s ob" id="passo-3" data-n="3" hidden><p class="st"></p><div class="pg"><i></i></div><h1 tabindex="-1">Quem mora nesse imóvel?</h1><p class="sub">Com o WhatsApp, a cobrança fica a um toque.</p>
+<form data-next="passo-4" novalidate>
+<div class="fl"><label for="t1">Nome do inquilino</label><input id="t1" name="inquilino" data-t="req" data-m="Escreva o nome do inquilino."><p class="er"></p></div>
+<div class="fl"><label for="t2">WhatsApp (opcional)</label><input id="t2" name="zap" type="tel" inputmode="tel" placeholder="(11) 90000-0000"></div>
+<button class="btn" type="submit">Continuar</button></form><a class="btn t" href="#pronto-depois">Salvar e continuar depois</a></section>
+
+<section class="s ob" id="passo-4" data-n="4" hidden><p class="st"></p><div class="pg"><i></i></div><h1 tabindex="-1">Quando começa o contrato?</h1><p class="sub">Se não souber o término, pode deixar em branco.</p>
+<form data-next="passo-5" novalidate>
+<div class="row"><div class="fl"><label for="k1">Início</label><input id="k1" name="inicio" type="date" data-t="req" data-m="Informe a data de início."><p class="er"></p></div>
+<div class="fl"><label for="k2">Término (opcional)</label><input id="k2" name="fim" type="date"></div></div>
+<button class="btn" type="submit">Continuar</button></form><a class="btn t" href="#pronto-depois">Salvar e continuar depois</a></section>
+
+<section class="s ob" id="passo-5" data-n="5" hidden><p class="st"></p><div class="pg"><i></i></div><h1 tabindex="-1">Em que dia vence o aluguel?</h1><p class="sub">Todo mês, nesse dia, o aluguel aparece na sua lista.</p>
+<form data-next="pronto" novalidate>
+<div class="fl"><label for="d1">Dia do vencimento</label><select id="d1" name="dia"></select><p class="hint">Em meses mais curtos, vence no último dia do mês.</p></div>
+<p class="pv" id="prev" aria-live="polite"></p>
+<button class="btn" type="submit">Concluir</button></form><a class="btn t" href="#pronto-depois">Salvar e continuar depois</a></section>
+
+<section class="s" id="pronto" hidden><div class="chk"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h1 tabindex="-1" id="pt">Tudo pronto!</h1><p class="sub">Seu primeiro aluguel já está organizado.</p>
+<div class="sum" id="sum"></div><a class="btn" href="#inicio">Ir para meu painel</a></section>
+<section class="s" id="pronto-depois" hidden><h1 tabindex="-1">Tudo salvo</h1><p class="ok-box">Você pode continuar de onde parou quando quiser.</p><a class="btn" href="#passo-2">Continuar agora</a><a class="btn o" href="#inicio">Ir para meu painel</a></section>
+<section class="s" id="inicio" hidden><h1 tabindex="-1">Aqui entra o seu painel</h1><p class="sub">O painel é a próxima etapa do projeto. Por enquanto, esta é a última tela do protótipo.</p><a class="btn o" href="#login">Voltar ao início</a></section>
+</div></main></div>
+<script>
+const S={},fmt=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}),num=s=>parseFloat(String(s).replace(/\./g,"").replace(",","."));
+const d1=document.getElementById("d1");for(let i=1;i<=31;i++)d1.add(new Option("Dia "+i,i));d1.value=10;
+function show(){const id=location.hash.slice(1)||"login";let f=false;
+ document.querySelectorAll("section.s").forEach(s=>{const on=s.id===id;s.hidden=!on;if(on)f=true});
+ if(!f){location.hash="login";return}
+ const s=document.getElementById(id);
+ if(s.classList.contains("ob")){const n=+s.dataset.n;s.querySelector(".st").textContent="Passo "+n+" de 5";s.querySelector(".pg i").style.width=n*20+"%"}
+ if(id==="pronto"){const r=[["Imóvel",S.imovel],["Valor",S.valor?fmt(num(S.valor)):""],["Inquilino",S.inquilino],["Vencimento","Todo dia "+(S.dia||10)]];
+  document.getElementById("sum").innerHTML=r.filter(x=>x[1]).map(x=>"<div><span>"+x[0]+"</span><b></b></div>").join("");
+  const b=document.querySelectorAll("#sum b");r.filter(x=>x[1]).forEach((x,i)=>b[i].textContent=x[1]);
+  if(S.nome)document.getElementById("pt").textContent="Tudo pronto, "+S.nome.split(" ")[0]+"!"}
+ window.scrollTo(0,0);const h=s.querySelector("h1");if(h)h.focus({preventScroll:true})}
+addEventListener("hashchange",show);show();
+function prev(){const v=num(S.valor||document.getElementById("i3").value);document.getElementById("prev").textContent="Todo dia "+d1.value+(v?", você receberá "+fmt(v):"")+"."}
+d1.addEventListener("change",prev);
+document.querySelectorAll("[data-eye]").forEach(b=>b.onclick=()=>{const i=b.previousElementSibling,v=i.type==="password";i.type=v?"text":"password";b.textContent=v?"Esconder":"Mostrar";b.setAttribute("aria-pressed",v)});
+function check(el){const t=el.dataset.t;if(!t)return true;let m="";const v=el.value.trim();
+ if(t==="req"&&!v)m=el.dataset.m||"Preencha este campo.";
+ if(t==="email"&&!/^\S+@\S+\.\S+$/.test(v))m="Digite um e-mail válido, como nome@email.com.";
+ if(t==="senha"&&v.length<8)m="A senha precisa ter pelo menos 8 caracteres.";
+ if(t==="valor"&&!(num(v)>0))m=el.dataset.m;
+ if(t==="aceite"&&!el.checked)m=el.dataset.m;
+ const e=el.closest(".fl").querySelector(".er");e.textContent=m;e.classList.toggle("on",!!m);el.setAttribute("aria-invalid",!!m);return !m}
+document.querySelectorAll("form").forEach(f=>{
+ f.addEventListener("submit",ev=>{ev.preventDefault();const bad=[...f.querySelectorAll("[data-t]")].filter(el=>!check(el));
+  if(bad.length){bad[0].focus();return}
+  f.querySelectorAll("[name]").forEach(el=>{if(el.name!=="senha")S[el.name]=el.value});
+  if(f.dataset.next==="passo-5")prev();location.hash=f.dataset.next});
+ f.addEventListener("focusout",ev=>{if(ev.target.dataset&&ev.target.dataset.t&&(ev.target.value||ev.target.type==="checkbox"))check(ev.target)})});
+prev();
+</script>
+</body>
+</html>

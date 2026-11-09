@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meu Aluguel — Identidade visual e design system</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700;6..12,800&display=swap">
+<style>
+:root{
+  --verde:#315442;--verde2:#426C59;--verde-claro:#7CB342;--suave:#E5EEE6;--dourado:#F4B942;--creme:#FAF9F3;
+  --fundo:#F5F3EA;--card:#FFFFFF;--texto:#303A34;--texto2:#5F675F;--erro:#C75C52;--borda:#DAD7C8;--sombra:0 2px 10px rgba(49,84,66,.08);
+  --roof:#315442;--corpo:#FAF9F3;--ok-bg:#E5EEE6;--ok:#27623F;--warn-bg:#FCEFD0;--warn:#7A5410;--err-bg:#F8E3E0;--err:#9C3A31;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --fundo:#17211B;--card:#1F2C25;--creme:#1F2C25;--suave:#2A3B31;--texto:#F1EFE6;--texto2:#B8C0B7;--borda:#364a3e;--sombra:none;--roof:#E5EEE6;--corpo:#1F2C25;
+  --ok-bg:#2A3B31;--ok:#A9D8B5;--warn-bg:#443716;--warn:#F4D58A;--err-bg:#4A2824;--err:#F2B1AA;}}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:auto}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fundo);color:var(--texto);font-family:"Nunito Sans",system-ui,sans-serif;font-weight:500;font-size:18px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--fundo);z-index:10}
+main{max-width:1040px;margin:0 auto;padding:24px 20px 64px}
+h1,h2,h3{font-weight:800;line-height:1.15;margin:0;color:var(--texto)}
+h1{font-size:clamp(2rem,6vw,3rem)}h2{font-size:1.6rem;margin-bottom:6px}h3{font-size:1.15rem;font-weight:700}
+p{margin:0 0 12px}.sec{margin-top:56px}.lead{color:var(--texto2);max-width:60ch}
+.card{background:var(--card);border:1px solid var(--borda);border-radius:18px;box-shadow:var(--sombra);padding:24px}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.wm{font-weight:800;letter-spacing:-.02em;color:var(--verde);line-height:.92}
+.logo{display:inline-flex;align-items:center;gap:12px}
+.logo svg{flex:none}.wmw{display:inline-flex;flex-direction:column}.wmw svg{width:100%;height:10px;margin-top:6px}
+.on-dark{background:var(--verde);color:#fff;border-radius:18px;padding:24px}
+.on-dark .wm{color:#fff}.on-dark svg{--roof:#fff;--corpo:#315442}
+.sw{border-radius:14px;padding:44px 12px 12px;font-weight:700;font-size:.95rem;line-height:1.3;border:1px solid var(--borda)}
+.sw small{display:block;font-weight:500;opacity:.85}
+.btn{font:inherit;font-weight:700;font-size:1.05rem;min-height:56px;padding:0 28px;border-radius:14px;border:2px solid transparent;cursor:pointer}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--dourado);outline-offset:3px}
+.b1{background:var(--verde);color:#fff}.b1:hover{background:var(--verde2)}
+.b2{background:transparent;color:var(--verde);border-color:var(--verde2)}
+.b3{background:var(--dourado);color:#2B2308}
+.b4{background:var(--erro);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .b1{background:var(--verde-claro);color:#14210A}:root:not([data-theme="light"]) .b2{color:var(--texto);border-color:var(--texto2)}}
+label{display:block;font-weight:700;margin-bottom:6px}
+input,select{width:100%;font:inherit;font-weight:500;min-height:56px;padding:0 16px;border-radius:12px;border:2px solid var(--borda);background:var(--card);color:var(--texto)}
+.hint{font-size:.95rem;color:var(--texto2);margin-top:4px}
+.valor{font-weight:800;font-size:2.2rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.badge{display:inline-flex;gap:6px;align-items:center;font-weight:700;font-size:.95rem;padding:4px 12px;border-radius:999px}
+.ok{background:var(--ok-bg);color:var(--ok)}.warn{background:var(--warn-bg);color:var(--warn)}.err{background:var(--err-bg);color:var(--err)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--borda)}
+.item:first-of-type{border-top:0}
+.ico{display:grid;place-items:center;width:56px;height:56px;border-radius:16px;background:var(--suave);color:var(--verde)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ico{color:var(--verde-claro)}}
+pre{background:#1E2B24;color:#E5EEE6;border-radius:14px;padding:18px;overflow-x:auto;font-size:.85rem;line-height:1.5;margin:0}
+.nav{display:flex;justify-content:space-around;gap:4px;padding:8px;border-radius:18px;background:var(--card);border:1px solid var(--borda)}
+.nav span{display:flex;flex-direction:column;align-items:center;font-size:.8rem;font-weight:700;padding:6px 8px;border-radius:12px;min-width:56px}
+.nav .on{background:var(--suave);color:var(--verde)}
+@media (prefers-reduced-motion:no-preference){.btn{transition:background .15s}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="casa" viewBox="0 0 100 80">
+    <defs>
+      <linearGradient id="gv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8BC34A"/><stop offset="1" stop-color="#5E9A2E"/></linearGradient>
+      <linearGradient id="gj" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC52F"/><stop offset="1" stop-color="#F4A912"/></linearGradient>
+    </defs>
+    <rect x="76" y="8.5" width="11.5" height="19" rx="2" fill="currentColor"/>
+    <rect x="15" y="36" width="9.5" height="25" rx="1.2" fill="currentColor"/>
+    <rect x="77.5" y="34" width="8" height="22" rx="1.2" fill="currentColor"/>
+    <path d="M19.4 36 50.4 14 78.3 33.3V58H24Z" style="fill:var(--corpo,#FAF9F3)"/>
+    <path d="M8.5 36 50.4 5.2 91.5 36" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="url(#gj)"><rect x="39.2" y="27.9" width="10.2" height="9.6" rx="3"/><rect x="51.6" y="27.9" width="10.2" height="9.6" rx="3"/><rect x="39.2" y="39.3" width="10.2" height="9.6" rx="3"/><rect x="51.6" y="39.3" width="10.2" height="9.6" rx="3"/></g>
+    <path d="M0 67.4C22 61 40 51 56 50.4 70 50 84 53 90.4 57.8 70 52 44 62 21 74 12 74.6 5 71.6 0 67.4Z" fill="url(#gv)"/>
+    <path d="M33.3 75.5C50 64 78 60.5 100 65.6 82 66.6 56 70.5 33.3 75.5Z" fill="url(#gj)"/>
+  </symbol>
+</svg>
+<main>
+  <header>
+    <span class="logo" role="img" aria-label="Meu Aluguel">
+      <svg width="104" height="83" style="color:var(--roof)"><use href="#casa"/></svg>
+      <span class="wmw"><span class="wm" style="font-size:2rem">Meu<br>Aluguel</span><svg viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 8C30 1 70 0 100 6 70 3 30 4 0 8Z" fill="#F4B942"/></svg></span>
+    </span>
+    <h1 style="margin-top:28px">Identidade visual e design system</h1>
+    <p class="lead">Base visual para toda a aplicação: logotipo, cores, tipografia e componentes. Clara, acolhedora e feita para ser lida sem esforço.</p>
+  </header>
+
+  <section class="sec" aria-labelledby="logo">
+    <h2 id="logo">Logotipo</h2>
+    <p class="lead">Telhado verde-escuro, janelas douradas e um morro com caminho dourado: a casa organizada e protegida. O símbolo é vetorial e muda de cor conforme o fundo.</p>
+    <div class="grid g2">
+      <div class="card"><h3>Horizontal</h3><p class="hint">Cabeçalho, landing page e login.</p>
+        <span class="logo"><svg width="120" height="96" style="color:var(--roof)" aria-hidden="true"><use href="#casa"/></svg><span class="wmw"><span class="wm" style="font-size:2.2rem">Meu<br>Aluguel</span><svg viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 8C30 1 70 0 100 6 70 3 30 4 0 8Z" fill="#F4B942"/></svg></span></span>
+        <p class="hint" style="margin-top:8px">Aluguel em Nunito Sans 800.</p></div>
+      <div class="card"><h3>Compacta</h3><p class="hint">Menu lateral e telas pequenas.</p>
+        <span class="logo"><svg width="60" height="48" style="color:var(--roof)" aria-hidden="true"><use href="#casa"/></svg><span class="wm" style="font-size:1.5rem">Meu Aluguel</span></span></div>
+      <div class="on-dark"><h3 style="color:#fff">Sobre fundo escuro</h3>
+        <p style="opacity:.85;font-size:.95rem">Telhado fica branco, janelas e detalhes mantêm as cores.</p>
+        <span class="logo"><svg width="100" height="80" aria-hidden="true"><use href="#casa"/></svg><span class="wmw"><span class="wm" style="font-size:1.8rem">Meu<br>Aluguel</span><svg viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><path d="M0 8C30 1 70 0 100 6 70 3 30 4 0 8Z" fill="#F4B942"/></svg></span></span></div>
+      <div class="card"><h3>Somente ícone</h3><p class="hint">App, favicon e redes sociais.</p>
+        <div class="row">
+          <svg width="88" height="88" viewBox="0 0 88 88" role="img" aria-label="Ícone do aplicativo"><rect width="88" height="88" rx="22" fill="#315442"/><svg x="10" y="18" width="68" height="54" style="color:#fff;--corpo:#315442"><use href="#casa"/></svg></svg>
+          <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#315442"/><svg x="4" y="8" width="32" height="26" style="color:#fff;--corpo:#315442"><use href="#casa"/></svg></svg>
+          <svg width="44" height="35" style="color:var(--roof)" aria-hidden="true"><use href="#casa"/></svg>
+        </div></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="cores">
+    <h2 id="cores">Cores oficiais</h2>
+    <p class="lead">Verde para ações e estados positivos. Dourado para destaque, sempre com texto escuro por cima, para manter o contraste.</p>
+    <div class="grid g3">
+      <div class="sw" style="background:#315442;color:#fff">Verde principal<small>#315442</small></div>
+      <div class="sw" style="background:#426C59;color:#fff">Verde secundário<small>#426C59</small></div>
+      <div class="sw" style="background:#7CB342;color:#14210A">Verde claro<small>#7CB342</small></div>
+      <div class="sw" style="background:#E5EEE6;color:#303A34">Verde suave<small>#E5EEE6</small></div>
+      <div class="sw" style="background:#F4B942;color:#2B2308">Dourado<small>#F4B942</small></div>
+      <div class="sw" style="background:#FAF9F3;color:#303A34">Creme<small>#FAF9F3</small></div>
+      <div class="sw" style="background:#F5F3EA;color:#303A34">Fundo<small>#F5F3EA</small></div>
+      <div class="sw" style="background:#303A34;color:#fff">Texto principal<small>#303A34</small></div>
+      <div class="sw" style="background:#727A73;color:#fff">Texto secundário<small>#727A73 (só em textos grandes ou apoio)</small></div>
+      <div class="sw" style="background:#C75C52;color:#fff">Erro<small>#C75C52</small></div>
+    </div>
+    <p class="hint" style="margin-top:12px">Nota de acessibilidade: nas telas, o texto secundário usa #5F675F para atingir contraste mínimo de 4,5:1 em textos pequenos.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="tipo">
+    <h2 id="tipo">Tipografia</h2>
+    <div class="card">
+      <p class="valor" style="font-size:3rem">Nunito Sans</p>
+      <p class="lead">Moderna, legível e acolhedora. Sem fontes finas, estreitas ou futuristas.</p>
+      <div class="item"><span style="font-weight:800;font-size:1.8rem">Título da página</span><span class="hint">800</span></div>
+      <div class="item"><span class="valor">R$ 4.850,00</span><span class="hint">Valores · 800</span></div>
+      <div class="item"><span style="font-weight:700;font-size:1.2rem">Subtítulo da seção</span><span class="hint">700</span></div>
+      <div class="item"><span>Texto corrido da interface, com 18 px e boa altura de linha.</span><span class="hint">500</span></div>
+      <div class="item"><span class="hint" style="margin:0">Informação secundária, como a data do último pagamento.</span><span class="hint">400–500</span></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="comp">
+    <h2 id="comp">Componentes</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Botões</h3><p class="hint">Altura mínima de 56 px. Cada um diz o que vai acontecer.</p>
+        <div class="row"><button class="btn b1">Começar agora</button><button class="btn b2">Saber mais</button><button class="btn b3">Acessar meu painel</button><button class="btn b4">Excluir imóvel</button></div></div>
+      <div class="card"><h3>Formulário</h3>
+        <label for="n">Nome do inquilino</label><input id="n" placeholder="Ex.: Maria da Silva">
+        <p class="hint">Como aparece nas cobranças.</p>
+        <label for="v" style="margin-top:12px">Valor do aluguel</label><input id="v" inputmode="decimal" placeholder="R$ 900,00"></div>
+      <div class="card"><h3>Resumo do mês</h3>
+        <p class="hint" style="margin:0">Aluguéis recebidos</p><p class="valor" style="color:var(--ok)">R$ 3.600,00</p>
+        <p class="hint" style="margin:0">Ainda falta receber</p><p class="valor">R$ 1.250,00</p></div>
+      <div class="card"><h3>Situação dos aluguéis</h3>
+        <div class="item"><span><b>Casa Jardim</b><br><span class="hint">Vence dia 10</span></span><span class="badge ok">✓ Pago</span></div>
+        <div class="item"><span><b>Apto 302</b><br><span class="hint">Pagou R$ 600 de R$ 1.000</span></span><span class="badge warn">◐ Parcial</span></div>
+        <div class="item"><span><b>Sala 12</b><br><span class="hint">Venceu dia 5</span></span><span class="badge err">! Atrasado</span></div>
+        <p class="hint">Cada situação tem ícone e texto, nunca só cor.</p></div>
+      <div class="card" style="text-align:center"><div class="ico" style="margin:0 auto 12px;width:72px;height:72px"><svg width="50" height="40" style="color:var(--roof)"><use href="#casa"/></svg></div>
+        <h3>Vamos organizar seu primeiro imóvel?</h3><p class="hint">Leva poucos minutos. Você pode parar e continuar depois.</p>
+        <button class="btn b1" style="width:100%">Adicionar meu primeiro imóvel</button></div>
+      <div class="card"><h3>Menu inferior (celular)</h3>
+        <nav class="nav" aria-label="Exemplo de menu"><span class="on">⌂<span style="padding:0">Início</span></span><span>▦<span style="padding:0">Imóveis</span></span><span>▤<span style="padding:0">Aluguéis</span></span><span>◔<span style="padding:0">Financeiro</span></span><span>≡<span style="padding:0">Mais</span></span></nav>
+        <p class="hint" style="margin-top:12px">Na versão final, ícones lineares do Lucide no lugar destes símbolos.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="tok">
+    <h2 id="tok">Tokens para o projeto</h2>
+    <p class="lead">Copie para o Tailwind (tailwind.config.ts) e para o CSS global do Next.js.</p>
+    <pre>colors: {
+  verde:   { DEFAULT:'#315442', 2:'#426C59', claro:'#7CB342', suave:'#E5EEE6' },
+  dourado: '#F4B942',
+  creme:   '#FAF9F3',
+  fundo:   '#F5F3EA',
+  texto:   { DEFAULT:'#303A34', 2:'#5F675F' },
+  erro:    '#C75C52',
+},
+fontFamily: { sans: ['"Nunito Sans"','system-ui','sans-serif'] },
+// pesos usados: 500, 600, 700, 800 (400 só para apoio)
+// raios: cards 18px · botões e campos 12–14px
+// alvo mínimo de toque: 56px · fonte base: 18px</pre>
+  </section>
+</main>
+</body>
+</html>
