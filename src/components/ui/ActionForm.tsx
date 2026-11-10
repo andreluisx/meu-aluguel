@@ -15,7 +15,7 @@ export function ActionForm({ action, submit, children }: { action: (s: FormState
   const [state, formAction] = useActionState(action, undefined);
   return (
     <form action={formAction} noValidate>
-      {state?.error && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">! {state.error}</p>}
+      {state?.error && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">{state.error}</p>}
       {state?.ok && <p role="status" className="mb-4 rounded-xl bg-verde-suave p-3 font-bold text-[#27623F]">✓ {state.ok}</p>}
       <FormCtx.Provider value={{ errors: state?.fieldErrors ?? {}, values: state?.values ?? {} }}>{children}</FormCtx.Provider>
       <Submit>{submit}</Submit>

@@ -20,7 +20,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ f
   const todos = (data ?? []) as unknown as Row[]; const ativos = todos.filter((r) => r.status === "ativo");
   const rows = f === "todos" ? todos : ativos;
   return (<>
-    <PageHeader titulo="Contratos" href="/contratos/novo" cta="Novo contrato" />
+    <PageHeader icone={FileText} titulo="Contratos" href="/contratos/novo" cta="Novo contrato" />
     <div className="mb-5 flex flex-wrap gap-2"><Link href="/contratos" className={chip(f === "ativos")} aria-current={f === "ativos" ? "page" : undefined}>Ativos ({ativos.length})</Link><Link href="/contratos?f=todos" className={chip(f === "todos")} aria-current={f === "todos" ? "page" : undefined}>Todos ({todos.length})</Link></div>
     {!todos.length ? <EmptyState titulo="Nenhum contrato ainda" texto="O contrato liga o imóvel ao inquilino e gera os aluguéis de cada mês." href="/contratos/novo" cta="Criar contrato" /> : !rows.length ? <p className="rounded-xl bg-white p-5 text-texto-2">Nenhum contrato ativo. Veja a aba “Todos” para os encerrados.</p> :
       <div className="grid gap-3 md:grid-cols-2">{rows.map((r) => (

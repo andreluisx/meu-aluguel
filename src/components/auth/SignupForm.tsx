@@ -36,9 +36,9 @@ export function SignupForm() {
       <PasswordStrength senha={senha} />
       <div className="mb-5">
         <label className="flex items-start gap-3"><input type="checkbox" name="aceite" className="mt-0.5 size-7 flex-none accent-verde-2" /><span>Li e aceito os <Link href="/termos" className="font-bold underline">Termos de uso</Link> e a <Link href="/privacidade" className="font-bold underline">Política de privacidade</Link>.</span></label>
-        {errors.aceite && <p role="alert" className="mt-1.5 font-bold text-erro-texto">! {errors.aceite}</p>}
+        {errors.aceite && <p role="alert" className="mt-1.5 font-bold text-erro-texto">{errors.aceite}</p>}
       </div>
-      {msg && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">! {msg}</p>}
+      {msg && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">{msg}</p>}
       <Button type="submit" disabled={busy} className="w-full">{busy ? "Criando…" : "Criar minha conta"}</Button>
     </form>
     <p className="mt-5">Já tem conta? <Link href="/entrar" className="font-bold underline">Entrar</Link></p>

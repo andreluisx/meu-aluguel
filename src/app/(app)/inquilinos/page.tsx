@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Users } from "lucide-react";
 import { Avatar } from "@/components/app/Avatar";
 import { EmptyState, LinkRow, PageHeader } from "@/components/app/ui";
 import { urlsAssinadas } from "@/lib/fotos";
@@ -12,7 +13,7 @@ export default async function Page() {
   const { data } = await sb.from("tenants").select("id,nome,whatsapp,telefone,email,foto_caminho").order("nome");
   const rows = (data ?? []) as R[]; const urls = await urlsAssinadas(sb, rows.map((r) => r.foto_caminho));
   return (<>
-    <PageHeader titulo="Inquilinos" href="/inquilinos/novo" cta="Adicionar inquilino" />
+    <PageHeader icone={Users} titulo="Inquilinos" href="/inquilinos/novo" cta="Adicionar inquilino" />
     {!rows.length ? <EmptyState titulo="Nenhum inquilino ainda" texto="Cadastre quem mora nos seus imóveis para criar os contratos." href="/inquilinos/novo" cta="Adicionar inquilino" /> :
       <div className="grid gap-3 md:grid-cols-2">{rows.map((r) => { const f = r.whatsapp ?? r.telefone; return (
         <LinkRow key={r.id} href={`/inquilinos/${r.id}/editar`}><div className="flex items-center gap-4"><Avatar url={urls.get(r.foto_caminho ?? "")} nome={r.nome} />

@@ -29,7 +29,7 @@ export function LoginForm() {
       <Field label="E-mail" name="email" type="email" autoComplete="email" error={errors.email} />
       <PasswordField label="Senha" name="senha" autoComplete="current-password" error={errors.senha} />
       <p className="mb-4"><Link href="/recuperar-senha" className="font-bold underline">Esqueci minha senha</Link></p>
-      {msg && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">! {msg}</p>}
+      {msg && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">{msg}</p>}
       <Button type="submit" disabled={busy} className="w-full">{busy ? "Entrando…" : "Entrar"}</Button>
     </form>
     <ButtonLink href="/cadastro" variant="outline" className="mt-3 w-full">Criar minha conta</ButtonLink>
