@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
+<<<<<<< HEAD
 import { AlertTriangle, ArrowRight, Plus, Building2, CalendarClock, CheckCircle2, Clock, FileText, Home, Receipt, TrendingUp, Wallet } from "lucide-react";
+=======
+import { AlertTriangle, ArrowRight, Building2, CalendarClock, CheckCircle2, Clock, FileText, Home, Receipt, TrendingUp, Wallet } from "lucide-react";
+>>>>>>> a3e90305993a061480649c980e79da21c6f91e2b
 import { ChargeItem } from "@/components/app/ChargeItem";
 import { Card, EmptyState, PageHeader, Stat } from "@/components/app/ui";
 import { ButtonLink } from "@/components/ui/Button";
@@ -17,15 +21,24 @@ function Titulo({ icone: I, cor, children }: { icone: LucideIcon; cor: keyof typ
   return <h2 className="mb-3 mt-9 flex items-center gap-2.5 text-xl font-extrabold"><span className={`grid size-10 place-items-center rounded-xl ${SECOES[cor]}`} aria-hidden><I size={22} /></span>{children}</h2>;
 }
 const ACOES: [string, string, LucideIcon, string][] = [
+<<<<<<< HEAD
   ["/alugueis", "Pagamento", Receipt, "bg-verde text-white"], ["/imoveis/novo", "Adicionar imóvel", Building2, "bg-verde text-white"],
   ["/contratos/novo", "Novo contrato", FileText, "bg-verde text-white"], ["/despesas/nova", "Adicionar despesa", Wallet, "bg-verde text-white"],
+=======
+  ["/alugueis", "Registrar pagamento", Receipt, "bg-verde text-white"], ["/imoveis/novo", "Adicionar imóvel", Building2, "bg-verde-suave text-verde"],
+  ["/contratos/novo", "Novo contrato", FileText, "bg-verde-suave text-verde"], ["/despesas/nova", "Adicionar despesa", Wallet, "bg-[#FCEFD0] text-[#7A5410]"],
+>>>>>>> a3e90305993a061480649c980e79da21c6f91e2b
 ];
 type Fim = { id: string; data_fim: string; properties: { nome: string } | null; tenants: { nome: string } | null };
 
 export default async function Painel() {
   const sb = await createClient();
   const { count: nImoveis } = await sb.from("properties").select("id", { count: "exact", head: true });
+<<<<<<< HEAD
   if (!nImoveis) return (<><PageHeader icone={"casa"} titulo="Bem-vindo ao Meu Aluguel" /><EmptyState titulo="Vamos organizar seu primeiro imóvel?" texto="Leva poucos minutos. Depois é só cadastrar o inquilino e o contrato." href="/imoveis/novo" cta="Adicionar meu primeiro imóvel" /></>);
+=======
+  if (!nImoveis) return (<><PageHeader icone={Home} titulo="Bem-vindo ao Meu Aluguel" /><EmptyState titulo="Vamos organizar seu primeiro imóvel?" texto="Leva poucos minutos. Depois é só cadastrar o inquilino e o contrato." href="/imoveis/novo" cta="Adicionar meu primeiro imóvel" /></>);
+>>>>>>> a3e90305993a061480649c980e79da21c6f91e2b
   await sb.rpc("generate_my_charges");
   const hoje = hojeBR(), ini = inicioMes(hoje), fim = fimMes(hoje), ini6 = `${addMes(hoje.slice(0, 7), -5)}-01`; const abertos = ["aguardando", "parcial"];
   const { data: { user } } = await sb.auth.getUser();
@@ -71,17 +84,27 @@ export default async function Painel() {
       <p className="font-bold text-texto-2">{pct}% do mês já recebido</p>
     </Card>
     <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+<<<<<<< HEAD
       <Stat label="Recebido" value={fmtCentavos(recebido)} tone="ok" icone={"checkCircle"} />
       <Stat label="Ainda a receber" value={fmtCentavos(aVencer)} tone="warn" icone={"relogio"} sub="aluguéis que ainda vão vencer" />
       <Stat label="Atrasados" value={fmtCentavos(totalAtraso)} tone={atrasados.length ? "err" : "ok"} icone={"alerta"} sub={atrasados.length ? `${atrasados.length} em atraso` : "nenhum"} />
     </div>
     <div className="mb-2 grid grid-cols-2 gap-3">
       <Stat label="Imóveis" value={String(nImoveis)} icone={"casa"} /><Stat label="Contratos ativos" value={String(nContratos.count ?? 0)} icone={"contratos"} />
+=======
+      <Stat label="Recebido" value={fmtCentavos(recebido)} tone="ok" icone={CheckCircle2} />
+      <Stat label="Ainda a receber" value={fmtCentavos(aVencer)} tone="aviso" icone={Clock} sub="aluguéis que ainda vão vencer" />
+      <Stat label="Atrasados" value={fmtCentavos(totalAtraso)} tone={atrasados.length ? "erro" : "ok"} icone={AlertTriangle} sub={atrasados.length ? `${atrasados.length} em atraso` : "nenhum"} />
+    </div>
+    <div className="mb-2 grid grid-cols-2 gap-3">
+      <Stat label="Imóveis" value={String(nImoveis)} icone={Home} /><Stat label="Contratos ativos" value={String(nContratos.count ?? 0)} icone={FileText} />
+>>>>>>> a3e90305993a061480649c980e79da21c6f91e2b
     </div>
 
     <Titulo icone={ArrowRight} cor="ok">O que você quer fazer?</Titulo>
     <div className="grid grid-cols-2 gap-3 md:grid-cols-4">{ACOES.map(([h, t, I, cor]) => (
       <Link key={h} href={h} className="flex min-h-28 flex-col items-center justify-center gap-2 rounded-[18px] border border-borda bg-white p-4 text-center font-bold shadow-sm hover:border-verde-2">
+<<<<<<< HEAD
         <span className={`grid size-12 place-items-center rounded-xl ${cor}`} aria-hidden><I size={26} /></span><span className="inline-flex items-center gap-1">{t}{<ArrowRight size={15} aria-hidden />}</span></Link>))}</div>
 
     {atrasados.length > 0 && (<><Titulo icone={AlertTriangle} cor="erro">Atrasados</Titulo>
@@ -90,6 +113,16 @@ export default async function Painel() {
 
     <Titulo icone={Clock} cor="aviso">Vencem hoje e nos próximos 7 dias</Titulo>
     {proximos.length ? <div className="grid gap-3">{proximos.map((c) => <ChargeItem key={c.id} c={c} hoje={hoje} acoes />)}</div> : <Card><p className="text-texto-2">Nenhum aluguel vence nos próximos 7 dias.</p></Card>}
+=======
+        <span className={`grid size-12 place-items-center rounded-xl ${cor}`} aria-hidden><I size={26} /></span>{t}</Link>))}</div>
+
+    {atrasados.length > 0 && (<><Titulo icone={AlertTriangle} cor="erro">Atrasados</Titulo>
+      <Card>{atrasados.slice(0, 5).map((c) => <ChargeItem key={c.id} c={c} hoje={hoje} acoes />)}
+        {atrasados.length > 5 && <Link href="/alugueis" className="mt-2 inline-flex min-h-12 items-center font-bold underline">Ver todos os atrasados ({atrasados.length})</Link>}</Card></>)}
+
+    <Titulo icone={Clock} cor="aviso">Vencem hoje e nos próximos 7 dias</Titulo>
+    <Card>{proximos.length ? proximos.map((c) => <ChargeItem key={c.id} c={c} hoje={hoje} acoes />) : <p className="text-texto-2">Nenhum aluguel vence nos próximos 7 dias.</p>}</Card>
+>>>>>>> a3e90305993a061480649c980e79da21c6f91e2b
 
     {terminando.length > 0 && (<><Titulo icone={CalendarClock} cor="aviso">Contratos que terminam em breve</Titulo>
       <Card>{terminando.map((l) => (

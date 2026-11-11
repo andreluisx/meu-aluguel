@@ -13,7 +13,11 @@ import { cobranca } from "@/lib/whatsapp";
 import { StatusBadge } from "./ui";
 
 const FAIXA = { pago: "border-l-verde-claro", aguardando: "border-l-borda", atrasado: "border-l-erro", parcial: "border-l-dourado", cancelado: "border-l-borda" } as const;
+<<<<<<< HEAD
 export function ChargeItem({ c, hoje, acoes, detalhes = true, mostrarInquilino = true }: { c: ChargeRow; hoje: string; acoes?: boolean; detalhes?: boolean; mostrarInquilino?: boolean }) {
+=======
+export function ChargeItem({ c, hoje, acoes, detalhes = true }: { c: ChargeRow; hoje: string; acoes?: boolean; detalhes?: boolean }) {
+>>>>>>> a3e90305993a061480649c980e79da21c6f91e2b
   const s = situacao(c, hoje); const sd = saldo(c); const wa = acoes ? cobranca(c, s, hoje) : null; const aj = c.ajuste_centavos; const enc = c.encargos_centavos; const L = c.leases;
   const est = s === "atrasado" && enc === 0 && L && (Number(L.multa_percentual) > 0 || Number(L.juros_mensal_percentual) > 0)
     ? calcularEncargos({ base: saldoBase(c), vencimento: c.vencimento, hoje, multa: Number(L.multa_percentual), juros: Number(L.juros_mensal_percentual) }) : null;
@@ -21,10 +25,18 @@ export function ChargeItem({ c, hoje, acoes, detalhes = true, mostrarInquilino =
   const sub = mostrarInquilino ? `${L?.properties?.nome ?? ""} · ${mesRef(c.competencia)}` : mesRef(c.competencia);
   const aberto = s !== "pago" && s !== "cancelado"; const ultimo = c.payments.reduce((m, p) => (p.pago_em > m ? p.pago_em : m), "");
   return (
+<<<<<<< HEAD
     <article className={`min-w-0 rounded-[18px] border border-borda border-l-[6px] bg-white p-4 shadow-sm ${FAIXA[s]}`}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0"><h3 className="break-words text-lg font-extrabold leading-tight">{titulo}</h3><p className="break-words text-texto-2">{sub}</p></div>
         <StatusBadge s={s} />
+=======
+    <div className={`mb-4 border-b border-borda border-l-[6px] pb-4 pl-3 last:mb-0 last:border-b-0 last:pb-0 ${FAIXA[s]}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div><b>{c.leases?.tenants?.nome ?? "Inquilino"}</b><br /><span className="text-texto-2">{c.leases?.properties?.nome} · {mesRef(c.competencia)}<br />Vence em {fmtData(c.vencimento)}</span></div>
+        <div className="text-right">{devido(c) !== c.valor_original_centavos && <span className="block text-[.9rem] text-texto-2 line-through tabular-nums">{fmtCentavos(c.valor_original_centavos)}</span>}
+          <b className="block text-lg tabular-nums">{fmtCentavos(devido(c))}</b><StatusBadge s={s} /></div>
+>>>>>>> a3e90305993a061480649c980e79da21c6f91e2b
       </div>
       <dl className="mt-3 grid grid-cols-2 gap-3 rounded-xl bg-fundo p-3">
         <div className="min-w-0"><dt className="text-[.85rem] font-semibold text-texto-2">Valor</dt>

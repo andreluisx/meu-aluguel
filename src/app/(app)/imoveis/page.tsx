@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Building2 } from "lucide-react";
 import { Miniatura } from "@/components/app/Avatar";
 import { EmptyState, LinkRow, PageHeader } from "@/components/app/ui";
 import { urlsAssinadas } from "@/lib/fotos";
@@ -16,7 +17,7 @@ export default async function Page() {
   for (const f of (fs ?? []) as { property_id: string; caminho: string }[]) if (!primeira.has(f.property_id)) primeira.set(f.property_id, f.caminho);
   const urls = await urlsAssinadas(sb, [...primeira.values()]);
   return (<>
-    <PageHeader titulo="Meus imóveis" href="/imoveis/novo" cta="Adicionar imóvel" />
+    <PageHeader icone={Building2} titulo="Meus imóveis" href="/imoveis/novo" cta="Adicionar imóvel" />
     {!rows.length ? <EmptyState titulo="Nenhum imóvel ainda" texto="Adicione o primeiro para começar a organizar seus aluguéis." href="/imoveis/novo" cta="Adicionar meu primeiro imóvel" /> :
       <div className="grid gap-3 md:grid-cols-2">{rows.map((r) => { const l = r.leases.find((x) => x.status === "ativo"); return (
         <LinkRow key={r.id} href={`/imoveis/${r.id}`}><div className="flex gap-4">
