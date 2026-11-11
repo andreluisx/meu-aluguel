@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { MesNav } from "@/components/app/MesNav";
 import { PrintButton } from "@/components/app/PrintButton";
 import { CHARGE_SELECT, asCharges, saldo } from "@/lib/charges";
 import { FORMAS, nomeCategoria } from "@/lib/constants";
@@ -16,9 +18,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ m
   const { data } = await sb.from("rent_charges").select(CHARGE_SELECT).in("status", ["aguardando", "parcial"]).lt("vencimento", hoje).order("vencimento");
   const atrasados = asCharges(data); const totalAtraso = atrasados.reduce((s, c) => s + saldo(c), 0);
   return (<div className="text-[1rem]">
-    <div className="mb-5 flex flex-wrap items-center gap-2 print:hidden"><Link href={`/financeiro?mes=${ym}`} className="inline-flex min-h-12 items-center rounded-xl border-2 border-verde-2 px-4 font-bold">← Voltar</Link>
-      <Link href={`/financeiro/relatorio?mes=${addMes(ym, -1)}`} className="inline-flex min-h-12 items-center rounded-xl border-2 border-verde-2 px-4 font-bold">Mês anterior</Link>
-      <Link href={`/financeiro/relatorio?mes=${addMes(ym, 1)}`} className="inline-flex min-h-12 items-center rounded-xl border-2 border-verde-2 px-4 font-bold">Próximo mês</Link><PrintButton /></div>
+    <div className="print:hidden"><MesNav ym={ym} href={(m) => `/financeiro/relatorio?mes=${m}`} />
+      <div className="mb-5 flex flex-wrap gap-2"><Link href={`/financeiro?mes=${ym}`} className="inline-flex min-h-12 items-center gap-2 rounded-xl border-2 border-verde-2 px-4 font-bold"><ArrowLeft size={18} aria-hidden />Voltar</Link><PrintButton /></div></div>
     <h1 className="text-[1.9rem] font-extrabold">Relatório financeiro</h1>
     <p className="mb-6 text-texto-2">{mesRef(`${ym}-01`)} · gerado em {fmtData(hoje)}</p>
     <h2 className="mb-2 text-xl font-extrabold">Resumo</h2>

@@ -30,7 +30,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
         <ConfirmAction action={encerrarContrato} id={l.id} rotulo="Encerrar contrato" aviso="Os aluguéis futuros sem pagamento serão cancelados. O histórico continua guardado." confirmar="Sim, encerrar contrato" /></>
         : <><p className="mb-3 font-bold">Este imóvel está disponível.</p><ButtonLink href="/contratos/novo">Criar contrato</ButtonLink></>}</Card>
     </div>
-    {l && <><h2 className="mb-3 text-xl font-extrabold">Histórico de aluguéis</h2><Card>{asCharges(ch).map((c) => <ChargeItem key={c.id} c={c} hoje={hoje} acoes />)}</Card></>}
+    {l && <><h2 className="mb-3 text-xl font-extrabold">Histórico de aluguéis</h2><div className="grid gap-3">{asCharges(ch).map((c) => <ChargeItem key={c.id} c={c} hoje={hoje} acoes mostrarInquilino={false} />)}</div></>}
     <Documentos propertyId={p.id} />
     {!l && !p.leases.length && <div className="mt-8"><ConfirmAction action={excluirImovel} id={p.id} rotulo="Excluir imóvel" aviso="Tem certeza? O imóvel e as despesas ligadas a ele serão apagados. Isso não pode ser desfeito." confirmar="Sim, excluir imóvel" /></div>}
   </>);

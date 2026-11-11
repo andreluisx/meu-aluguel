@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ArrowDownCircle, ArrowUpCircle, BarChart3, Download, FileText, Scale } from "lucide-react";
 import Link from "next/link";
+import { MesNav } from "@/components/app/MesNav";
 import { Card, PageHeader, Stat } from "@/components/app/ui";
 import { mesRef } from "@/lib/dates";
 import { addMes, carregarMes, mesValido } from "@/lib/financeiro";
@@ -12,17 +14,15 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ m
   const r = await carregarMes(sb, ym); const max = Math.max(r.rec, r.desp, 1);
   const nav = "inline-flex min-h-12 items-center rounded-xl border-2 border-verde-2 px-4 font-bold";
   return (<>
-    <PageHeader titulo="Financeiro" sub="O que entrou e o que saiu em cada mês." />
-    <div className="mb-5 flex flex-wrap items-center gap-2">
-      <Link href={`/financeiro?mes=${addMes(ym, -1)}`} className={nav} aria-label="Mês anterior">← Anterior</Link>
-      <b className="min-w-[10rem] text-center text-lg">{mesRef(`${ym}-01`)}</b>
-      <Link href={`/financeiro?mes=${addMes(ym, 1)}`} className={nav} aria-label="Próximo mês">Próximo →</Link>
-      <Link href={`/financeiro/relatorio?mes=${ym}`} className={`${nav} ml-auto`}>Relatório para imprimir</Link>
-      <a href={`/financeiro/exportar?mes=${ym}`} className={nav}>Baixar planilha (CSV)</a>
+    <PageHeader icone={"financeiro"} titulo="Financeiro" sub="O que entrou e o que saiu em cada mês." />
+    <MesNav ym={ym} href={(m) => `/financeiro?mes=${m}`} />
+    <div className="mb-5 grid grid-cols-2 gap-2">
+      <Link href={`/financeiro/relatorio?mes=${ym}`} className={`${nav} justify-center gap-2 text-center`}><FileText size={18} className="flex-none" aria-hidden />Relatório</Link>
+      <a href={`/financeiro/exportar?mes=${ym}`} className={`${nav} justify-center gap-2 text-center`}><Download size={18} className="flex-none" aria-hidden />Planilha (CSV)</a>
     </div>
     <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-      <Stat label="Aluguéis recebidos" value={fmtCentavos(r.rec)} tone="ok" /><Stat label="Despesas" value={fmtCentavos(r.desp)} />
-      <Stat label="Resultado do mês" value={fmtCentavos(r.liquido)} tone={r.liquido < 0 ? "err" : "ok"} />
+      <Stat label="Aluguéis recebidos" value={fmtCentavos(r.rec)} tone="ok" icone={"entrada"} /><Stat label="Despesas" value={fmtCentavos(r.desp)} tone="warn" icone={"financeiro"} />
+      <Stat label="Resultado do mês" value={fmtCentavos(r.liquido)} tone={r.liquido < 0 ? "err" : "ok"} icone={"escala"} />
     </div>
     <Card className="mb-6"><div className="grid gap-3">
       {[["Recebido", r.rec, "bg-verde-claro"], ["Despesas", r.desp, "bg-dourado"]].map(([t, v, c]) => (

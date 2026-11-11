@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { MessageCircle, Pencil, Plus } from "lucide-react";
 import { editarInquilino, enviarFotoInquilino, excluirInquilino, liberarAcessoInquilino, removerFotoInquilino, revogarAcessoInquilino } from "@/app/actions";
 import { Avatar } from "@/components/app/Avatar";
 import { ConfirmAction } from "@/components/app/ConfirmAction";
@@ -33,7 +34,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     {av && <p role={av[0] ? "status" : "alert"} className={`mb-4 max-w-xl rounded-xl p-3 font-bold ${av[0] ? "bg-verde-suave text-[#27623F]" : "bg-[#F8E3E0] text-erro-texto"}`}>{av[0] ? "✓" : "!"} {av[1]}</p>}
     <div className="max-w-xl">
     <Card className="mb-6"><div className="flex items-center gap-4"><Avatar url={foto} nome={t.nome} size={72} /><div><b className="text-lg">Foto</b><p className="text-texto-2">Aparece em miniatura na lista de inquilinos.</p></div></div>
-      <details className="mt-3"><summary className="inline-flex min-h-12 cursor-pointer items-center rounded-xl border-2 border-verde-2 px-4 font-bold">{foto ? "Trocar foto" : "Adicionar foto"}</summary>
+      <details className="mt-3"><summary className="inline-flex min-h-12 cursor-pointer items-center rounded-xl border-2 border-verde-2 px-4 font-bold">{foto ? <><Pencil size={18} className="mr-2" aria-hidden />Trocar foto</> : <><Plus size={20} className="mr-2" aria-hidden />Adicionar foto</>}</summary>
         <div className="mt-3 rounded-xl bg-fundo p-4"><ActionForm action={enviarFotoInquilino} submit="Guardar foto"><input type="hidden" name="id" value={t.id} /><FileField label="Foto" fotos /></ActionForm></div></details>
       {foto && <div className="mt-3"><ConfirmAction action={removerFotoInquilino} id={t.id} rotulo="Remover foto" aviso="Remover a foto deste inquilino?" confirmar="Sim, remover" /></div>}</Card>
     <ActionForm action={editarInquilino} submit="Salvar alterações">
@@ -48,7 +49,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       <p className="mb-3 text-texto-2">Com o acesso, o inquilino vê só os próprios aluguéis, pagamentos e comprovantes. Entra por um link no e-mail, sem senha.</p>
       {t.user_id ? <><p className="mb-3 font-bold text-[#27623F]">✓ Acesso liberado para {t.email}</p>
         <p className="mb-3 text-[.95rem] text-texto-2">Se o inquilino disser que o e-mail não chegou, peça para olhar o spam e esperar 1 minuto antes de pedir outro.</p>
-        <div className="mb-3 flex flex-wrap gap-2">{n && <a href={`https://wa.me/${n}?text=${encodeURIComponent(texto)}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center rounded-xl bg-verde px-4 font-bold text-white">Enviar aviso de novo pelo WhatsApp</a>}</div>
+        <div className="mb-3 flex flex-wrap gap-2">{n && <a href={`https://wa.me/${n}?text=${encodeURIComponent(texto)}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-verde px-4 font-bold text-white"><MessageCircle size={20} aria-hidden />Enviar aviso de novo pelo WhatsApp</a>}</div>
         <ConfirmAction action={revogarAcessoInquilino} id={t.id} rotulo="Remover acesso" aviso="O inquilino não conseguirá mais entrar. Você pode liberar de novo quando quiser." confirmar="Sim, remover acesso" /></>
         : features.tenant_portal_enabled ? <form action={liberarAcessoInquilino}><input type="hidden" name="id" value={t.id} /><Button type="submit">Liberar acesso</Button><p className="mt-2 text-[.95rem] text-texto-2">Precisa do e-mail do inquilino cadastrado acima.</p></form>
         : <p className="rounded-xl bg-[#ECE9DC] p-3 font-bold">Ainda não está disponível. Falta configurar a chave de servidor do sistema.</p>}</Card>

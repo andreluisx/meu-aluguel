@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { AlertTriangle, CalendarClock, CheckCircle2, Clock, FileText, Home } from "lucide-react";
+import { AlertTriangle, CalendarClock, CheckCircle2, Clock, FileText, Home, LogOut } from "lucide-react";
 import { sair } from "@/app/actions";
 import { BotaoEmBreve } from "@/components/app/BotaoEmBreve";
 import { Card, StatusBadge } from "@/components/app/ui";
@@ -50,7 +50,7 @@ export default async function Page() {
 
   return (<main className="mx-auto max-w-xl px-5 pb-16 pt-[calc(env(safe-area-inset-top)+16px)]">
     <div className="mb-5 flex items-center justify-between gap-3"><Logo variant="compact" className="!text-xl" />
-      <form action={sair}><button className="min-h-12 rounded-xl border-2 border-verde-2 px-4 font-bold">Sair</button></form></div>
+      <form action={sair}><button className="inline-flex min-h-12 items-center gap-2 rounded-xl border-2 border-verde-2 px-4 font-bold"><LogOut size={18} aria-hidden />Sair</button></form></div>
     <h1 className="mb-1 text-[2rem] font-extrabold leading-tight">Olá{nome ? `, ${nome}` : ""}!</h1>
     {pl && <p className="mb-5 flex items-start gap-2 text-texto-2"><Home size={20} className="mt-0.5 flex-none" aria-hidden /><span><b className="text-texto">{pl.imovel_nome}</b>{[pl.endereco, pl.cidade, pl.estado].filter(Boolean).length ? <><br />{[pl.endereco, pl.cidade, pl.estado].filter(Boolean).join(", ")}</> : null}</span></p>}
 

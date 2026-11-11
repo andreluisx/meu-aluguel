@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { Icone } from "./Icone";
 
 type Variant = "primary" | "outline" | "gold" | "ghost";
-const base = "inline-flex min-h-14 items-center justify-center rounded-[14px] border-2 px-7 text-[1.05rem] font-bold transition-colors disabled:opacity-60";
+const base = "inline-flex min-h-14 items-center justify-center gap-2 rounded-[14px] border-2 px-7 text-[1.05rem] font-bold transition-colors disabled:opacity-60";
 const styles: Record<Variant, string> = {
   primary: "border-transparent bg-verde text-white hover:bg-verde-2",
   outline: "border-verde-2 text-texto hover:bg-verde-suave",
@@ -10,8 +11,8 @@ const styles: Record<Variant, string> = {
   ghost: "border-transparent text-texto underline",
 };
 export function ButtonLink({ href, variant = "primary", className = "", children }: { href: string; variant?: Variant; className?: string; children: ReactNode }) {
-  return <Link href={href} className={`${base} ${styles[variant]} ${className}`}>{children}</Link>;
+  return <Link href={href} className={`${base} ${styles[variant]} ${className}`}><Icone texto={children} />{children}</Link>;
 }
-export function Button({ variant = "primary", className = "", ...p }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {
-  return <button {...p} className={`${base} ${styles[variant]} ${className}`} />;
+export function Button({ variant = "primary", className = "", children, ...p }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }) {
+  return <button {...p} className={`${base} ${styles[variant]} ${className}`}><Icone texto={children} />{children}</button>;
 }

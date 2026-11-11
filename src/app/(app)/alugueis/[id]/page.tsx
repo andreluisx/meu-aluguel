@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const c = data as unknown as ChargeRow; const s = situacao(c, hoje); const h2 = "mb-3 mt-8 text-xl font-extrabold";
   return (<>
     <PageHeader titulo="Detalhes do aluguel" sub="Pagamentos, valor combinado, vencimento e cancelamento." />
-    <Card><ChargeItem c={c} hoje={hoje} acoes detalhes={false} /></Card>
+    <ChargeItem c={c} hoje={hoje} acoes detalhes={false} />
     <h2 className={h2}>Pagamentos recebidos</h2>
     <Card>{c.payments.length ? c.payments.map((p) => (
       <div key={p.id} className="border-t border-borda py-3 first:border-0"><div className="flex justify-between gap-3"><span>{fmtData(p.pago_em)} · {FORMAS.find((f) => f[0] === p.forma)?.[1] ?? p.forma}{p.observacao ? <><br /><span className="text-texto-2">{p.observacao}</span></> : null}</span><b className="tabular-nums">{fmtCentavos(p.valor_centavos)}</b></div>

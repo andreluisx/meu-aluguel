@@ -18,3 +18,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
 body { background: var(--color-fundo); color: var(--color-texto); font-size: 18px; font-weight: 500; line-height: 1.6; }
 :focus-visible { outline: 3px solid var(--color-dourado); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+input[type="date"], input[type="month"] { display: block; width: 100%; min-width: 0; max-width: 100%; -webkit-appearance: none; appearance: none; text-align: left; }
+input[type="date"]::-webkit-date-and-time-value { text-align: left; min-width: 0; }
+select { -webkit-appearance: none; appearance: none; }

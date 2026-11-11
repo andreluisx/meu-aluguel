@@ -1,5 +1,6 @@
-import { FileText } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
 import { enviarDocumento, enviarFotos, excluirDocumento } from "@/app/actions";
+import { Icone } from "@/components/ui/Icone";
 import { ActionForm } from "@/components/ui/ActionForm";
 import { FileField, SelectField } from "@/components/ui/Field";
 import { DOC_TIPOS, nomeDoc } from "@/lib/constants";
@@ -10,7 +11,7 @@ import { ConfirmAction } from "./ConfirmAction";
 import { Card } from "./ui";
 
 type Doc = { id: string; tipo: string; nome_arquivo: string; caminho: string; created_at: string };
-const botao = "inline-flex min-h-12 cursor-pointer items-center rounded-xl bg-verde px-4 font-bold text-white";
+const botao = "inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-xl bg-verde px-4 font-bold text-white";
 export async function Documentos({ propertyId }: { propertyId: string }) {
   const sb = await createClient();
   const { data } = await sb.from("documents").select("id,tipo,nome_arquivo,caminho,created_at").eq("property_id", propertyId).order("created_at");
@@ -25,7 +26,7 @@ export async function Documentos({ propertyId }: { propertyId: string }) {
             {i === 0 && <p className="mt-1 text-[.9rem] font-bold text-texto-2">Foto principal</p>}
             <div className="mt-1"><ConfirmAction action={excluirDocumento} id={f.id} rotulo="Excluir" aviso="Excluir esta foto?" confirmar="Sim, excluir" /></div></div>))}</div>
           : <p className="mb-3 text-texto-2">As fotos são opcionais. A primeira que você enviar aparece como miniatura na lista de imóveis.</p>}
-        <details><summary className={botao}>Adicionar fotos</summary>
+        <details><summary className={botao}><Plus size={20} aria-hidden />Adicionar fotos</summary>
           <div className="mt-3 rounded-xl bg-fundo p-4"><ActionForm action={enviarFotos} submit="Guardar fotos"><input type="hidden" name="property_id" value={propertyId} />
             <FileField label="Fotos" hint="Pode escolher várias (até 10 por vez). Elas são reduzidas automaticamente." fotos multiple /></ActionForm></div></details>
       </Card></section>
@@ -35,10 +36,10 @@ export async function Documentos({ propertyId }: { propertyId: string }) {
           <div key={d.id} className="border-t border-borda py-3 first:border-0">
             <div className="flex items-center gap-3"><FileText size={24} className="flex-none text-verde" aria-hidden />
               <div className="min-w-0 flex-1"><b className="block truncate">{d.nome_arquivo}</b><span className="text-[.95rem] text-texto-2">{nomeDoc(d.tipo)} · {fmtData(d.created_at.slice(0, 10))}</span></div>
-              <a href={`/documentos/${d.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center rounded-xl border-2 border-verde-2 px-4 font-bold">Abrir</a></div>
+              <a href={`/documentos/${d.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center gap-2 rounded-xl border-2 border-verde-2 px-4 font-bold"><Icone texto="Abrir" />Abrir</a></div>
             <div className="mt-2"><ConfirmAction action={excluirDocumento} id={d.id} rotulo="Excluir" aviso="Tem certeza? O arquivo será apagado e não poderá ser recuperado." confirmar="Sim, excluir arquivo" /></div>
           </div>)) : <p className="mb-3 text-texto-2">Guarde aqui escritura, IPTU, seguro, laudo de vistoria, contas e outros papéis. O contrato de aluguel fica na aba Contratos.</p>}
-        <details className="mt-3"><summary className={botao}>Adicionar documento</summary>
+        <details className="mt-3"><summary className={botao}><Plus size={20} aria-hidden />Adicionar documento</summary>
           <div className="mt-3 rounded-xl bg-fundo p-4"><ActionForm action={enviarDocumento} submit="Guardar documento"><input type="hidden" name="property_id" value={propertyId} />
             <SelectField label="Tipo" name="tipo">{DOC_TIPOS.map(([v, t]) => <option key={v} value={v}>{t}</option>)}</SelectField>
             <FileField label="Arquivo" hint="PDF ou foto, até 10 MB." /></ActionForm></div></details>
