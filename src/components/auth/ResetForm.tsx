@@ -23,7 +23,7 @@ export function ResetForm() {
     <p className="mb-6 text-texto-2">Digite seu e-mail e enviaremos um link para criar uma nova senha.</p>
     <form onSubmit={onSubmit} noValidate>
       <Field label="E-mail" name="email" type="email" autoComplete="email" error={errors.email} />
-      {msg && <p role="alert" className="mb-4 font-bold text-erro-texto">{msg}</p>}
+      {msg && <p role="alert" className="mb-4 font-bold text-erro-texto">! {msg}</p>}
       <Button type="submit" className="w-full">Enviar link</Button>
     </form>
     <ButtonLink href="/entrar" variant="ghost" className="mt-2 w-full">Voltar</ButtonLink>

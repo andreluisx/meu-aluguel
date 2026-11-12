@@ -29,7 +29,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   if (!data) notFound();
   const t = data as T; const av = AVISOS[sp.aviso ?? sp.erro ?? ""]; const foto = (await urlsAssinadas(sb, [t.foto_caminho])).get(t.foto_caminho ?? "");
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"; const n = waNumero(t.whatsapp ?? t.telefone);
-  const texto = `Olá, ${t.nome.split(" ")[0]}Liberei seu acesso ao Meu Aluguel para você acompanhar seus aluguéis. Entre em ${site}/entrar-inquilino e digite seu e-mail (${t.email}). Você receberá um link para entrar, sem precisar de senha.`;
+  const texto = `Olá, ${t.nome.split(" ")[0]}! Liberei seu acesso ao Meu Aluguel para você acompanhar seus aluguéis. Entre em ${site}/entrar-inquilino e digite seu e-mail (${t.email}). Você receberá um link para entrar, sem precisar de senha.`;
   return (<><PageHeader titulo="Editar inquilino" />
     {av && <p role={av[0] ? "status" : "alert"} className={`mb-4 max-w-xl rounded-xl p-3 font-bold ${av[0] ? "bg-verde-suave text-[#27623F]" : "bg-[#F8E3E0] text-erro-texto"}`}>{av[0] ? "✓" : "!"} {av[1]}</p>}
     <div className="max-w-xl">

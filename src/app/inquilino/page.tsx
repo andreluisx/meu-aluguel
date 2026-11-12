@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { AlertTriangle, CalendarClock, CheckCircle2, Clock, FileText, Home, LogOut } from "lucide-react";
-import { sair } from "@/app/actions";
+import { informarPagamento, sair } from "@/app/actions";
 import { BotaoEmBreve } from "@/components/app/BotaoEmBreve";
+import { PixCopia } from "@/components/app/PixCopia";
+import { ActionForm } from "@/components/ui/ActionForm";
+import { Field, FileField } from "@/components/ui/Field";
+import { gerarPix } from "@/lib/pix";
 import { Card, StatusBadge } from "@/components/app/ui";
 import { Logo } from "@/components/brand/Logo";
 import { type ChargeRow, devido, pago, saldo, situacao } from "@/lib/charges";
 import { diasEntre, fmtData, hojeBR, mesRef, proximoVencimento, quandoVence } from "@/lib/dates";
-import { fmtCentavos } from "@/lib/money";
+import { fmtCentavos, inputMoney } from "@/lib/money";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Meus aluguéis" };
 export const dynamic = "force-dynamic";
-type Lease = { lease_id: string; imovel_nome: string; endereco: string | null; cidade: string | null; estado: string | null; proprietario_nome: string | null; valor_centavos: number; dia_vencimento: number; data_inicio: string; data_fim: string | null };
+type Lease = { lease_id: string; imovel_nome: string; endereco: string | null; cidade: string | null; estado: string | null; proprietario_nome: string | null; pix_chave: string | null; pix_nome: string | null; pix_cidade: string | null; valor_centavos: number; dia_vencimento: number; data_inicio: string; data_fim: string | null };
 type C = ChargeRow & { lease_id: string };
 const ultimo = (c: C) => c.payments.reduce((m, p) => (p.pago_em > m ? p.pago_em : m), "");
 
@@ -25,10 +29,11 @@ export default async function Page() {
   const sb = await createClient(); const { data: { user } } = await sb.auth.getUser();
   if (!user) redirect("/entrar");
   const hoje = hojeBR();
-  const [{ data: ls }, { data: cs }, { data: pf }] = await Promise.all([
+  const [{ data: ls }, { data: cs }, { data: pf }, { data: cls }] = await Promise.all([
     sb.rpc("portal_inquilino"),
     sb.from("rent_charges").select("id,lease_id,competencia,vencimento,valor_original_centavos,ajuste_centavos,ajuste_motivo,encargos_centavos,motivo_cancelamento,status,payments(id,valor_centavos,pago_em,forma),documents(id,tipo,nome_arquivo)").neq("status", "cancelado").order("vencimento"),
     sb.from("profiles").select("nome").eq("id", user.id).maybeSingle(),
+    sb.from("payment_claims").select("id,charge_id,status,valor_centavos,pago_em").order("created_at", { ascending: false }),
   ]);
   const leases = (ls ?? []) as Lease[]; const nome = ((pf as { nome?: string } | null)?.nome ?? "").split(" ")[0];
   const todos = ((cs ?? []) as unknown as C[]).map((c) => ({ ...c, leases: null, payments: c.payments.map((p) => ({ ...p, observacao: null })) })) as C[];
@@ -46,6 +51,10 @@ export default async function Page() {
   const calc = pl ? proximoVencimento(pl.dia_vencimento, hoje) : null;
   const proxData = seguinte?.vencimento ?? (calc && (!principal || calc > principal.vencimento) && (!pl?.data_fim || calc <= pl.data_fim) ? calc : null);
   const proxValor = seguinte ? saldo(seguinte) : pl?.valor_centavos ?? 0;
+  const claims = (cls ?? []) as { id: string; charge_id: string; status: string }[];
+  const claimAberto = principal ? claims.find((x) => x.charge_id === principal.id && x.status === "pendente") : undefined;
+  const claimRecusado = principal && !claimAberto ? claims.find((x) => x.charge_id === principal.id && x.status === "recusado") : undefined;
+  const pixCodigo = principal && pl?.pix_chave ? gerarPix({ chave: pl.pix_chave, valorCentavos: saldo(principal), nome: pl.pix_nome ?? pl.proprietario_nome ?? "Proprietario", cidade: pl.pix_cidade ?? "Brasil", txid: `MA${principal.id.replace(/-/g, "").slice(0, 20)}` }) : null;
   const aviso = `Pagamento pelo aplicativo ainda não está disponível. Por enquanto, combine o pagamento diretamente com ${pl?.proprietario_nome ?? "seu proprietário"}.`;
 
   return (<main className="mx-auto max-w-xl px-5 pb-16 pt-[calc(env(safe-area-inset-top)+16px)]">
@@ -74,11 +83,29 @@ export default async function Page() {
           {principal.ajuste_motivo && <p className="pb-1 text-[.95rem] text-texto-2">Motivo do ajuste: {principal.ajuste_motivo}</p>}
         </div>
         {tom === "erro" && <p className="mb-4 rounded-xl bg-white/80 p-3 text-[.95rem]">Se o contrato prevê multa e juros por atraso, o valor será informado por {pl?.proprietario_nome ?? "seu proprietário"} e aparecerá aqui.</p>}
-        <div className="grid gap-3">
-          <BotaoEmBreve destaque rotulo="Pagar agora" icone="pix" aviso={aviso} />
-          <BotaoEmBreve rotulo="Copiar código Pix" icone="copiar" aviso={aviso} />
-          <BotaoEmBreve rotulo="Já paguei — enviar comprovante" icone="comprovante" aviso="Em breve você poderá enviar o comprovante por aqui. Por enquanto, envie para o seu proprietário." />
-        </div>
+        {pixCodigo ? (
+          <div className="grid gap-4">
+            <div className="rounded-xl bg-white/80 p-4"><p className="mb-2 text-lg font-extrabold">Como pagar com Pix</p>
+              <ol className="mb-4 list-decimal space-y-1 pl-5"><li>Toque em <b>Copiar código Pix</b>.</li><li>Abra o aplicativo do seu banco e escolha <b>Pix &gt; Pix Copia e Cola</b>.</li><li>Cole o código e confira o valor.</li><li>Depois de pagar, volte aqui e toque em <b>Já paguei</b>.</li></ol>
+              <PixCopia codigo={pixCodigo} /></div>
+            {claimAberto ? (
+              <p role="status" className="flex items-start gap-2 rounded-xl bg-[#FDF5DF] p-3 font-bold"><Clock size={20} className="mt-0.5 flex-none" aria-hidden />Você avisou que pagou. Aguardando {pl?.proprietario_nome ?? "o proprietário"} confirmar.</p>
+            ) : (<>
+              {claimRecusado && <p role="alert" className="rounded-xl bg-[#FBECEA] p-3 font-bold text-erro-texto">! O proprietário não encontrou o seu último aviso. Confira com ele.</p>}
+              <details><summary className="flex min-h-14 cursor-pointer items-center justify-center gap-2 rounded-[14px] border-2 border-verde-2 bg-white px-5 text-[1.05rem] font-bold"><CheckCircle2 size={22} aria-hidden />Já paguei</summary>
+                <div className="mt-3 rounded-xl bg-white/80 p-4"><ActionForm action={informarPagamento} submit="Avisar o proprietário">
+                  <input type="hidden" name="charge_id" value={principal.id} />
+                  <Field label="Valor que você pagou (R$)" name="valor" mask="moeda" defaultValue={inputMoney(saldo(principal))} />
+                  <Field label="Data do pagamento" name="pago_em" type="date" defaultValue={hoje} />
+                  <FileField label="Comprovante (opcional)" hint="PDF ou foto, até 10 MB." />
+                </ActionForm></div></details></>)}
+          </div>
+        ) : (
+          <div className="grid gap-3">
+            <p className="rounded-xl bg-white/80 p-3 text-[.95rem]">Seu proprietário ainda não cadastrou a chave Pix no sistema. Por enquanto, combine o pagamento diretamente com {pl?.proprietario_nome ?? "ele"}.</p>
+            <BotaoEmBreve destaque rotulo="Pagar agora" icone="pix" aviso={aviso} />
+          </div>
+        )}
       </section>
     ) : (
       <section className="mb-5 flex items-center gap-4 rounded-[20px] border-2 border-verde-claro bg-[#EEF5EF] p-5" role="status">

@@ -1,9 +1,10 @@
-export const CHARGE_SELECT = "id,competencia,vencimento,valor_original_centavos,ajuste_centavos,ajuste_motivo,encargos_centavos,motivo_cancelamento,status,leases(multa_percentual,juros_mensal_percentual,properties(nome),tenants(nome,whatsapp,telefone)),payments(id,valor_centavos,pago_em,forma,observacao),documents(id,tipo,nome_arquivo)";
+export const CHARGE_SELECT = "id,competencia,vencimento,valor_original_centavos,ajuste_centavos,ajuste_motivo,encargos_centavos,motivo_cancelamento,status,leases(multa_percentual,juros_mensal_percentual,properties(nome),tenants(nome,whatsapp,telefone)),payments(id,valor_centavos,pago_em,forma,observacao),documents(id,tipo,nome_arquivo),payment_claims(id,valor_centavos,pago_em,status,mensagem)";
 export type ChargeRow = {
   id: string; competencia: string; vencimento: string; valor_original_centavos: number; ajuste_centavos: number; ajuste_motivo: string | null; encargos_centavos: number; motivo_cancelamento: string | null; status: string;
   leases: { multa_percentual: number; juros_mensal_percentual: number; properties: { nome: string } | null; tenants: { nome: string; whatsapp: string | null; telefone: string | null } | null } | null;
   payments: { id: string; valor_centavos: number; pago_em: string; forma: string; observacao: string | null }[];
   documents?: { id: string; tipo: string; nome_arquivo: string }[];
+  payment_claims?: { id: string; valor_centavos: number; pago_em: string; status: string; mensagem: string | null }[];
 };
 export const asCharges = (d: unknown) => (d ?? []) as ChargeRow[];
 // Valor devido = original − desconto (ou + acréscimo) + multa/juros que o dono aplicou.

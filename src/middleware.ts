@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { SUPABASE_KEY, SUPABASE_URL, supabaseConfigured } from "@/lib/supabase/env";
 
-const PRIVADAS = /^\/(painel|imoveis|inquilinos|contratos|alugueis|documentos|financeiro|despesas|mais|primeiros-passos|nova-senha|inquilino)(\/|$)/;
+const PRIVADAS = /^\/(painel|imoveis|inquilinos|contratos|alugueis|documentos|financeiro|despesas|configuracoes|mais|primeiros-passos|nova-senha|inquilino)(\/|$)/;
 
 export async function middleware(req: NextRequest) {
   if (!supabaseConfigured) return NextResponse.next();

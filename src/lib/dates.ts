@@ -12,3 +12,10 @@ const CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "
 export const mesCurto = (ym: string) => `${CURTOS[+ym.slice(5, 7) - 1]}/${ym.slice(2, 4)}`;
 export const saudacao = () => { const h = +new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", hour: "numeric", hour12: false }); return h < 12 ? "Bom dia" : h < 18 ? "Boa tarde" : "Boa noite"; };
 export const dataExtensa = () => new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", weekday: "long", day: "numeric", month: "long" });
+// Próximo vencimento a partir de hoje para um contrato com dia fixo (mês curto: último dia do mês).
+export function proximoVencimento(dia: number, hoje: string) {
+  const [y, m] = hoje.split("-").map(Number);
+  const mk = (yy: number, mm: number) => `${yy}-${String(mm).padStart(2, "0")}-${String(Math.min(dia, new Date(Date.UTC(yy, mm, 0)).getUTCDate())).padStart(2, "0")}`;
+  const a = mk(y, m); return a >= hoje ? a : m === 12 ? mk(y + 1, 1) : mk(y, m + 1);
+}
+export const quandoVence = (hoje: string, venc: string) => { const d = diasEntre(hoje, venc); return d < -1 ? `venceu há ${-d} dias` : d === -1 ? "venceu ontem" : d === 0 ? "vence hoje" : d === 1 ? "vence amanhã" : `vence em ${d} dias`; };

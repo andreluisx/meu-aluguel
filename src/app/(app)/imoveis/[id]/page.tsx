@@ -23,7 +23,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const hoje = hojeBR(); const end = [p.endereco, p.cidade, p.estado].filter(Boolean).join(", ");
   return (<>
     <PageHeader titulo={p.nome} sub={`${p.tipo}${end ? " · " + end : ""}`} href={`/imoveis/${p.id}/editar`} cta="Editar imóvel" />
-    {erro === "contratos" && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">Este imóvel tem contratos no histórico e não pode ser excluído. Encerre o contrato para parar de gerar aluguéis.</p>}
+    {erro === "contratos" && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">! Este imóvel tem contratos no histórico e não pode ser excluído. Encerre o contrato para parar de gerar aluguéis.</p>}
     <div className="mb-6 grid gap-3 md:grid-cols-2">
       <Card><p className="text-texto-2">Valor do aluguel</p><p className="text-2xl font-extrabold tabular-nums">{fmtCentavos(p.valor_aluguel_centavos)}</p></Card>
       <Card>{l ? <><p className="text-texto-2">Inquilino atual</p><p className="text-xl font-extrabold">{l.tenants?.nome}</p><p className="mb-3 text-texto-2">Vence todo dia {l.dia_vencimento} · desde {fmtData(l.data_inicio)}{l.data_fim ? ` até ${fmtData(l.data_fim)}` : ""}</p>

@@ -2,10 +2,11 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { parseValor, ajusteSchema, cancelamentoSchema, contratoEdicaoSchema, vencimentoSchema, contratoSchema, despesaSchema, firstErrors, imovelSchema, inquilinoSchema, onboardingSchema, pagamentoSchema } from "@/lib/validation";
+import { avisoSchema, pixSchema, parseValor, ajusteSchema, cancelamentoSchema, contratoEdicaoSchema, vencimentoSchema, contratoSchema, despesaSchema, firstErrors, imovelSchema, inquilinoSchema, onboardingSchema, pagamentoSchema } from "@/lib/validation";
 import { toCentavos } from "@/lib/money";
 import { hojeBR } from "@/lib/dates";
 import { features } from "@/lib/features";
+import { normalizarChave, type TipoChave } from "@/lib/pix";
 import { calcularEncargos } from "@/lib/encargos";
 import { enviarFoto, salvarArquivo, validarArquivo } from "@/lib/documents";
 import { DOC_TIPOS } from "@/lib/constants";
@@ -68,11 +69,11 @@ export async function registrarPagamento(_: FormState, fd: FormData): Promise<Fo
   if (quitar && motivo.length < 3) return fail({ motivo: "Escreva o motivo para considerar quitado." }, v);
   const arq = fd.get("arquivo"); const temArq = arq instanceof File && arq.size > 0;
   if (temArq) { const e = await validarArquivo(arq); if (e) return fail({ arquivo: e }, v); }
-  const { data: c } = await sb.from("rent_charges").select("valor_original_centavos,ajuste_centavos,ajuste_motivo,status,payments(valor_centavos)").eq("id", v.charge_id).single();
+  const { data: c } = await sb.from("rent_charges").select("valor_original_centavos,ajuste_centavos,encargos_centavos,ajuste_motivo,status,payments(valor_centavos)").eq("id", v.charge_id).single();
   if (!c) return fail({}, v, GENERIC);
   if (c.status === "cancelado") return fail({}, v, "Este aluguel está cancelado. Reabra-o em “Mais opções” para registrar pagamento.");
   const ja = (c.payments as { valor_centavos: number }[]).reduce((t, p) => t + p.valor_centavos, 0);
-  const saldoAtual = c.valor_original_centavos - c.ajuste_centavos - ja; const cents = toCentavos(v.valor);
+  const saldoAtual = c.valor_original_centavos - c.ajuste_centavos + c.encargos_centavos - ja; const cents = toCentavos(v.valor);
   if (cents > saldoAtual) return fail({ valor: "O valor é maior que o saldo pendente. Se combinaram outro valor, use “Mais opções”." }, v);
   const { error } = await sb.from("payments").insert({ charge_id: v.charge_id, valor_centavos: cents, pago_em: v.pago_em, forma: v.forma, observacao: txt((v.observacao ?? "").slice(0, 300)) });
   if (error) return fail({}, v, GENERIC);
@@ -337,4 +338,63 @@ export async function removerEncargos(fd: FormData): Promise<void> {
   const { sb } = await ctx(); const id = String(fd.get("id") ?? "");
   await sb.from("rent_charges").update({ encargos_centavos: 0, encargos_em: null }).eq("id", id);
   atualizarTelas(); redirect(`/alugueis/${id}`);
+}
+
+// ----- Pix direto para o dono -----
+export async function salvarPix(_: FormState, fd: FormData): Promise<FormState> {
+  const { sb, user } = await ctx(); const v = raw(fd);
+  const errs = firstErrors(pixSchema, v); if (Object.keys(errs).length) return fail(errs, v);
+  const { error } = await sb.from("profiles").update({ chave_pix: normalizarChave(v.tipo as TipoChave, v.chave), chave_pix_tipo: v.tipo, pix_nome: v.nome.trim(), pix_cidade: v.cidade.trim() }).eq("id", user.id);
+  if (error) return fail({}, v, GENERIC);
+  revalidatePath("/configuracoes"); revalidatePath("/painel");
+  return { ok: "Chave Pix salva. Faça o teste de R$ 0,01 para conferir.", values: v };
+}
+
+// O INQUILINO avisa que pagou. Isso NÃO dá baixa: só cria um aviso para o dono conferir no extrato e confirmar.
+export async function informarPagamento(_: FormState, fd: FormData): Promise<FormState> {
+  const { sb } = await ctx(); const v = raw(fd);
+  if (!features.tenant_portal_enabled) return fail({}, v, "Este recurso ainda não está disponível.");
+  const errs = firstErrors(avisoSchema, v); if (Object.keys(errs).length) return fail(errs, v);
+  const arq = fd.get("arquivo"); const temArq = arq instanceof File && arq.size > 0;
+  if (temArq) { const e = await validarArquivo(arq); if (e) return fail({ arquivo: e }, v); }
+  // só enxerga a cobrança quem é o inquilino dela (RLS)
+  const { data: c } = await sb.from("rent_charges").select("id,owner_id,valor_original_centavos,ajuste_centavos,encargos_centavos,status,payments(valor_centavos)").eq("id", v.charge_id).maybeSingle();
+  if (!c) return fail({}, v, GENERIC);
+  const ja = (c.payments as { valor_centavos: number }[]).reduce((t, p) => t + p.valor_centavos, 0);
+  const saldoAtual = c.valor_original_centavos - c.ajuste_centavos + c.encargos_centavos - ja;
+  if (c.status === "cancelado" || saldoAtual <= 0) return fail({}, v, "Este aluguel não tem valor em aberto.");
+  const cents = toCentavos(v.valor);
+  if (cents > saldoAtual) return fail({ valor: "O valor é maior do que falta pagar." }, v);
+  const admin = createAdminClient();
+  const { error } = await admin.from("payment_claims").insert({ owner_id: c.owner_id, charge_id: c.id, valor_centavos: cents, pago_em: v.pago_em, mensagem: txt((v.mensagem ?? "").slice(0, 300)) });
+  if (error) return fail({}, v, error.code === "23505" ? "Você já avisou este pagamento. Aguarde o proprietário confirmar." : GENERIC);
+  if (temArq) {
+    const nome = arq.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9._-]/g, "_").slice(-80);
+    const caminho = `${c.owner_id}/${crypto.randomUUID()}-${nome}`;
+    const up = await admin.storage.from("documentos").upload(caminho, arq, { contentType: arq.type, upsert: false });
+    if (!up.error) await admin.from("documents").insert({ owner_id: c.owner_id, charge_id: c.id, tipo: "comprovante", nome_arquivo: arq.name.slice(0, 120), caminho, tamanho: arq.size, tipo_mime: arq.type, visivel_inquilino: true });
+  }
+  revalidatePath("/inquilino"); revalidatePath("/alugueis"); revalidatePath("/painel");
+  return { ok: "Aviso enviado! Seu proprietário vai conferir e confirmar o pagamento.", values: {} };
+}
+
+// O DONO confirma: só agora o pagamento é registrado (como Pix) e o aluguel é baixado.
+export async function confirmarAviso(fd: FormData): Promise<void> {
+  const { sb } = await ctx(); const id = String(fd.get("id") ?? "");
+  const { data: cl } = await sb.from("payment_claims").select("id,charge_id,valor_centavos,pago_em,status").eq("id", id).maybeSingle();
+  if (!cl || cl.status !== "pendente") return;
+  const { data: c } = await sb.from("rent_charges").select("valor_original_centavos,ajuste_centavos,encargos_centavos,status,payments(valor_centavos)").eq("id", cl.charge_id).maybeSingle();
+  if (c && c.status !== "cancelado") {
+    const ja = (c.payments as { valor_centavos: number }[]).reduce((t, p) => t + p.valor_centavos, 0);
+    const valor = Math.min(cl.valor_centavos, c.valor_original_centavos - c.ajuste_centavos + c.encargos_centavos - ja);
+    if (valor > 0) { const { error } = await sb.from("payments").insert({ charge_id: cl.charge_id, valor_centavos: valor, pago_em: cl.pago_em, forma: "pix", observacao: "Confirmado a partir do aviso do inquilino" }); if (error) return; }
+  }
+  await sb.from("payment_claims").update({ status: "confirmado", resolvido_em: new Date().toISOString() }).eq("id", id);
+  atualizarTelas();
+}
+
+export async function recusarAviso(fd: FormData): Promise<void> {
+  const { sb } = await ctx(); const id = String(fd.get("id") ?? "");
+  await sb.from("payment_claims").update({ status: "recusado", resolvido_em: new Date().toISOString() }).eq("id", id).eq("status", "pendente");
+  atualizarTelas();
 }

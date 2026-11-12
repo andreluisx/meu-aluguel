@@ -74,7 +74,7 @@ export function Onboarding() {
         <SelectField label="Dia do vencimento" name="dia" value={d.dia} onChange={set("dia")} hint="Em meses mais curtos, vence no último dia do mês.">{Array.from({ length: 31 }, (_, i) => <option key={i + 1} value={i + 1}>Dia {i + 1}</option>)}</SelectField>
         <p className="mb-5 rounded-[14px] bg-verde-suave p-4 font-bold" aria-live="polite">Todo dia {d.dia}{parseValor(d.valor) > 0 ? `, você receberá ${brl(parseValor(d.valor))}` : ""}.</p>
       </>}
-      {erro && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">{erro}</p>}
+      {erro && <p role="alert" className="mb-4 rounded-xl bg-[#F8E3E0] p-3 font-bold text-erro-texto">! {erro}</p>}
       <Button type="submit" disabled={salvando} className="w-full">{salvando ? "Salvando…" : passo === 4 ? "Concluir" : "Continuar"}</Button>
     </form>
     <Button variant="ghost" className="mt-2 w-full" onClick={() => { salvar(d, passo); setFim("depois"); }}>Salvar e continuar depois</Button>

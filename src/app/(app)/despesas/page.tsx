@@ -15,11 +15,7 @@ export default async function Page() {
   const { data } = await sb.from("expenses").select("id,categoria,descricao,valor_centavos,data,property_id,properties(nome)").order("data", { ascending: false }).limit(60);
   const rows = (data ?? []) as unknown as Dp[];
   return (<>
-<<<<<<< HEAD
     <PageHeader icone="despesas" titulo="Despesas" sub="Manutenção, impostos e contas dos seus imóveis." href="/despesas/nova" cta="Adicionar despesa" />
-=======
-    <PageHeader icone={Wallet} titulo="Despesas" sub="Manutenção, impostos e contas dos seus imóveis." href="/despesas/nova" cta="Adicionar despesa" />
->>>>>>> a3e90305993a061480649c980e79da21c6f91e2b
     {!rows.length ? <EmptyState titulo="Nenhuma despesa registrada" texto="Registre o que você gasta com cada imóvel para saber quanto sobra no fim do mês." href="/despesas/nova" cta="Adicionar despesa" /> :
       <Card>{rows.map((d) => (
         <div key={d.id} className="border-t border-borda py-4 first:border-0">

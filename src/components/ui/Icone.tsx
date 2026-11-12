@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { AlertTriangle, Archive, ArrowLeft, ArrowRight, Ban, Banknote, CalendarDays, Check, CheckCircle2, Clock, Download, ExternalLink, Eye, EyeOff, FileText, History, KeyRound, List, Loader2, LogIn, LogOut, Pencil, Percent, Plus, Printer, RefreshCw, RotateCcw, Save, Send, SlidersHorizontal, Trash2, UserPlus, UserX, X } from "lucide-react";
+import { AlertTriangle, Archive, ArrowLeft, ArrowRight, Ban, Banknote, Bell, Copy, CalendarDays, Check, CheckCircle2, Clock, Download, ExternalLink, Eye, EyeOff, FileText, History, KeyRound, List, Loader2, LogIn, LogOut, Pencil, Percent, Plus, Printer, RefreshCw, RotateCcw, Save, Send, SlidersHorizontal, Trash2, UserPlus, UserX, X } from "lucide-react";
 
 // Escolhe o ícone pelo começo do texto do botão. Assim todo botão ganha ícone sem repetir código.
 const REGRAS: [RegExp, LucideIcon][] = [
@@ -14,6 +14,9 @@ const REGRAS: [RegExp, LucideIcon][] = [
   [/^Encerrar(\s|$)/i, Archive],
   [/^Cancelar aluguel/i, Ban],
   [/^Cancelar$/i, X],
+  [/^Não recebi/i, X],
+  [/^Avisar/i, Bell],
+  [/^Copiar/i, Copy],
   [/^Reabrir(\s|$)/i, RotateCcw],
   [/^(Atualizar multa|Aplicar)/i, Percent],
   [/^(Pedir de novo|Não chegou|Atualizar)/i, RefreshCw],

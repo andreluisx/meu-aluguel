@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { chaveValida, type TipoChave } from "./pix";
 import { senhaAceita } from "./password";
 import { TIPOS } from "./constants";
 
@@ -65,3 +66,10 @@ export const ajusteSchema = z.object({ charge_id: z.string().uuid(), valor: z.st
 export const vencimentoSchema = z.object({ charge_id: z.string().uuid(), vencimento: iso });
 export const cancelamentoSchema = z.object({ charge_id: z.string().uuid(), motivo });
 export const contratoEdicaoSchema = z.object({ id: z.string().uuid(), valor, multa: pct, juros: pct, dia: z.coerce.number().int().min(1).max(31), fim: z.string().default("").refine((v) => !v || /^\d{4}-\d{2}-\d{2}$/.test(v), "Data inválida.") });
+export const pixSchema = z.object({
+  tipo: z.enum(["cpf", "telefone", "email", "aleatoria"]),
+  chave: z.string().trim().min(1, "Informe a chave."),
+  nome: z.string().trim().min(2, "Escreva seu nome.").max(25, "Use no máximo 25 letras."),
+  cidade: z.string().trim().min(2, "Escreva sua cidade.").max(15, "Use no máximo 15 letras."),
+}).superRefine((d, ctx) => { if (!chaveValida(d.tipo as TipoChave, d.chave)) ctx.addIssue({ code: "custom", path: ["chave"], message: "Essa chave não parece válida para o tipo escolhido." }); });
+export const avisoSchema = z.object({ charge_id: z.string().uuid(), valor: z.string().refine((v) => parseValor(v) > 0, "Informe o valor."), pago_em: iso });

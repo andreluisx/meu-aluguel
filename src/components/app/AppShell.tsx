@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Building2, FileText, Home, LogOut, MoreHorizontal, Receipt, Users, Wallet } from "lucide-react";
+import { BarChart3, Building2, FileText, Home, LogOut, MoreHorizontal, Receipt, Settings, Users, Wallet } from "lucide-react";
 import type { ReactNode } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { sair } from "@/app/actions";
 
-const side = [["/painel", "Visão geral", Home], ["/imoveis", "Imóveis", Building2], ["/inquilinos", "Inquilinos", Users], ["/alugueis", "Aluguéis", Receipt], ["/contratos", "Contratos", FileText], ["/financeiro", "Financeiro", BarChart3], ["/despesas", "Despesas", Wallet]] as const;
+const side = [["/painel", "Visão geral", Home], ["/imoveis", "Imóveis", Building2], ["/inquilinos", "Inquilinos", Users], ["/alugueis", "Aluguéis", Receipt], ["/contratos", "Contratos", FileText], ["/financeiro", "Financeiro", BarChart3], ["/despesas", "Despesas", Wallet], ["/configuracoes", "Configurações", Settings]] as const;
 const tabs = [["/painel", "Início", Home], ["/imoveis", "Imóveis", Building2], ["/alugueis", "Aluguéis", Receipt], ["/financeiro", "Financeiro", BarChart3], ["/mais", "Mais", MoreHorizontal]] as const;
 
 export function AppShell({ nome, children }: { nome: string; children: ReactNode }) {
